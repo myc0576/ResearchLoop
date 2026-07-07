@@ -49,9 +49,11 @@
       .card-en { font-size: 13px; font-weight: 520; fill: #68758B; }
       .loop-en { font-size: 14px; font-weight: 760; fill: #20304A; }
       .loop-cn { font-size: 13px; font-weight: 560; fill: #6C778B; }
-      .chip { font-size: 13px; font-weight: 650; fill: #31415C; }
-      .chip-bottom { font-size: 11.2px; font-weight: 650; fill: #31415C; letter-spacing: 0; }
-      .chip-muted { font-size: 12px; font-weight: 540; fill: #65738A; }
+      .chip { font-size: 15px; font-weight: 690; fill: #31415C; }
+      .chip-bottom { font-size: 13.4px; font-weight: 660; fill: #31415C; letter-spacing: 0; }
+      .chip-muted { font-size: 13.2px; font-weight: 560; fill: #65738A; }
+      .memory-en { font-size: 15.2px; font-weight: 670; fill: #42526D; }
+      .memory-cn { font-size: 14.2px; font-weight: 680; fill: #4C5D78; }
       .small { font-size: 13px; font-weight: 560; fill: #66738B; }
       .govern-title { font-size: 22px; font-weight: 740; fill: #17253A; }
       .govern-en { font-size: 14px; font-weight: 560; fill: #6E7A90; }
@@ -71,23 +73,23 @@
     <text x="74" y="117" class="subtitle-cn">科研 Agent 的本地外置大脑</text>
     <text x="74" y="146" class="subtitle-en">Local External Brain for Research Agents</text>
 
-    <g transform="translate(1012 58)" filter="url(#softShadow)">
-      <rect x="0" y="0" width="160" height="46" rx="23" fill="#FFFFFF" stroke="#D9E4F2"/>
-      <circle cx="23" cy="23" r="7" fill="#6CCB9A"/>
-      <text x="42" y="21" class="chip">Local-first</text>
-      <text x="42" y="36" class="chip-muted">本地优先</text>
+    <g transform="translate(940 52)" filter="url(#softShadow)">
+      <rect x="0" y="0" width="184" height="56" rx="28" fill="#FFFFFF" stroke="#D9E4F2"/>
+      <circle cx="27" cy="28" r="8" fill="#6CCB9A"/>
+      <text x="50" y="25" class="chip">Local-first</text>
+      <text x="50" y="43" class="chip-muted">本地优先</text>
     </g>
-    <g transform="translate(1190 58)" filter="url(#softShadow)">
-      <rect x="0" y="0" width="170" height="46" rx="23" fill="#FFFFFF" stroke="#D9E4F2"/>
-      <circle cx="23" cy="23" r="7" fill="#7FA7FF"/>
-      <text x="42" y="21" class="chip">No embedded LLM</text>
-      <text x="42" y="36" class="chip-muted">不内置大模型</text>
+    <g transform="translate(1144 52)" filter="url(#softShadow)">
+      <rect x="0" y="0" width="198" height="56" rx="28" fill="#FFFFFF" stroke="#D9E4F2"/>
+      <circle cx="27" cy="28" r="8" fill="#7FA7FF"/>
+      <text x="50" y="25" class="chip">No embedded LLM</text>
+      <text x="50" y="43" class="chip-muted">不内置大模型</text>
     </g>
-    <g transform="translate(1378 58)" filter="url(#softShadow)">
-      <rect x="0" y="0" width="150" height="46" rx="23" fill="#FFFFFF" stroke="#D9E4F2"/>
-      <circle cx="22" cy="23" r="7" fill="#F4B85B"/>
-      <text x="39" y="21" class="chip">Human control</text>
-      <text x="39" y="36" class="chip-muted">人控自进化</text>
+    <g transform="translate(1362 52)" filter="url(#softShadow)">
+      <rect x="0" y="0" width="178" height="56" rx="28" fill="#FFFFFF" stroke="#D9E4F2"/>
+      <circle cx="26" cy="28" r="8" fill="#F4B85B"/>
+      <text x="46" y="25" class="chip">Human control</text>
+      <text x="46" y="43" class="chip-muted">人控自进化</text>
     </g>
   </g>
 
@@ -154,8 +156,11 @@
     <text x="800" y="366" text-anchor="middle" fill="#ECF8FF" font-size="15" font-weight="570">Workflow Memory Kernel</text>
     <text x="800" y="397" text-anchor="middle" fill="#FFFFFF" font-size="31" font-weight="780">ResearchLoop Core</text>
     <text x="800" y="427" text-anchor="middle" fill="#F8FEFF" font-size="24" font-weight="700">工作流记忆内核</text>
-    <text x="800" y="515" text-anchor="middle" class="small">Store · Retrieve · Review · Validate · Evolve</text>
-    <text x="800" y="538" text-anchor="middle" class="small">存储 · 检索 · 审查 · 验证 · 演化</text>
+    <g filter="url(#softShadow)">
+      <rect x="642" y="518" width="316" height="50" rx="21" fill="#FFFFFF" opacity="0.92" stroke="#DCE7F5"/>
+    </g>
+    <text x="800" y="538" text-anchor="middle" class="memory-en">Store · Retrieve · Review · Validate · Evolve</text>
+    <text x="800" y="559" text-anchor="middle" class="memory-cn">存储 · 检索 · 审查 · 验证 · 演化</text>
   </g>
 
   <g class="font" filter="url(#softShadow)">
@@ -243,40 +248,35 @@
   </g>
 
   <g class="font">
-    <rect x="60" y="720" width="1480" height="126" rx="28" fill="#FFFFFF" opacity="0.90" stroke="#DCE7F5" filter="url(#shadow)"/>
-    <text x="96" y="759" class="govern-title">治理边界：安全、可验证、可复用</text>
-    <text x="96" y="783" class="govern-en">Governance: Safe, Validated, Reusable</text>
+    <rect x="60" y="708" width="1480" height="170" rx="28" fill="#FFFFFF" opacity="0.90" stroke="#DCE7F5" filter="url(#shadow)"/>
+    <text x="96" y="748" class="govern-title">治理边界：安全、可验证、可复用</text>
+    <text x="96" y="775" class="govern-en">Governance: Safe, Validated, Reusable</text>
     <text x="1182" y="708" class="small">Workflow Memory feeds Paper 2 · 工作流记忆反哺下一篇论文</text>
     <g filter="url(#softShadow)">
-      <g transform="translate(96 805)">
-        <rect width="300" height="34" rx="17" fill="#F6FAFF" stroke="#DCE7F5"/>
-        <text x="17" y="22" class="chip-bottom">No raw private data in repo / 不提交原始私密数据</text>
+      <g transform="translate(96 802)">
+        <rect width="350" height="36" rx="18" fill="#F6FAFF" stroke="#DCE7F5"/>
+        <text x="18" y="23" class="chip-bottom">No raw private data in repo / 不提交原始私密数据</text>
       </g>
-      <g transform="translate(410 805)">
-        <rect width="210" height="34" rx="17" fill="#F8FCF6" stroke="#DCE7F5"/>
-        <text x="17" y="22" class="chip-bottom">Validators before reuse / 复用前验证</text>
+      <g transform="translate(466 802)">
+        <rect width="265" height="36" rx="18" fill="#F8FCF6" stroke="#DCE7F5"/>
+        <text x="18" y="23" class="chip-bottom">Validators before reuse / 复用前验证</text>
       </g>
-      <g transform="translate(634 805)">
-        <rect width="236" height="34" rx="17" fill="#FFF9EE" stroke="#DCE7F5"/>
-        <text x="17" y="22" class="chip-bottom">Candidate-first evolution / 候选式自进化</text>
+      <g transform="translate(752 802)">
+        <rect width="315" height="36" rx="18" fill="#FFF9EE" stroke="#DCE7F5"/>
+        <text x="18" y="23" class="chip-bottom">Candidate-first evolution / 候选式自进化</text>
       </g>
-      <g transform="translate(884 805)">
-        <rect width="306" height="34" rx="17" fill="#F6FAFF" stroke="#DCE7F5"/>
-        <text x="17" y="22" class="chip-bottom">Agent-agnostic / 兼容 Codex · Claude Code · Cursor</text>
+      <g transform="translate(96 840)">
+        <rect width="520" height="36" rx="18" fill="#F6FAFF" stroke="#DCE7F5"/>
+        <text x="18" y="23" class="chip-bottom">Agent-agnostic / 兼容 Codex · Claude Code · Cursor</text>
       </g>
-      <g transform="translate(1204 805)">
-        <rect width="306" height="34" rx="17" fill="#F8FCF6" stroke="#DCE7F5"/>
-        <text x="17" y="22" class="chip-bottom">Researcher remains in control / 研究者保持控制权</text>
+      <g transform="translate(638 840)">
+        <rect width="460" height="36" rx="18" fill="#F8FCF6" stroke="#DCE7F5"/>
+        <text x="18" y="23" class="chip-bottom">Researcher remains in control / 研究者保持控制权</text>
       </g>
     </g>
   </g>
 
-  <g opacity="0.72">
-    <path d="M538 324 C590 330 610 354 638 379" fill="none" stroke="#A7B5CC" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M1060 324 C1008 330 988 354 962 379" fill="none" stroke="#A7B5CC" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M612 514 C644 504 656 490 678 472" fill="none" stroke="#A7B5CC" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M988 514 C956 504 944 490 922 472" fill="none" stroke="#A7B5CC" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M720 572 C736 540 756 514 778 484" fill="none" stroke="#A7B5CC" stroke-width="1.6" stroke-linecap="round"/>
-    <path d="M880 572 C864 540 844 514 822 484" fill="none" stroke="#A7B5CC" stroke-width="1.6" stroke-linecap="round"/>
+  <g opacity="0.18">
+    <circle cx="800" cy="410" r="176" fill="none" stroke="#7A8BA8" stroke-width="1.2" stroke-dasharray="7 12"/>
   </g>
 </svg>
