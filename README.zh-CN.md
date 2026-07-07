@@ -84,7 +84,7 @@ flowchart LR
 
 ## 第一次使用路径
 
-1. 把仓库放在稳定本地路径，例如 `G:\BaiduSyncdisk\ResearchLoop`。
+1. 把仓库放在稳定本地路径，例如 `D:\ResearchLoop`。
 2. 先读 [`AGENTS.md`](AGENTS.md)；如果使用 Claude Code，再读 [`CLAUDE.md`](CLAUDE.md)。
 3. 用 [`templates/paper_contract.md`](templates/paper_contract.md) 或 [`templates/research_project/`](templates/research_project/) 开始一篇论文。
 4. 把真实文献转成 [`templates/literature_card.md`](templates/literature_card.md)，并登记到 [`registry/literature.yaml`](registry/literature.yaml)。

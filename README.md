@@ -94,7 +94,7 @@ flowchart LR
 
 ## First Use Path
 
-1. Put the repository at a stable local path such as `G:\BaiduSyncdisk\ResearchLoop`.
+1. Put the repository at a stable local path such as `D:\ResearchLoop`.
 2. Read [`AGENTS.md`](AGENTS.md) and, if using Claude Code, [`CLAUDE.md`](CLAUDE.md).
 3. Start a paper with [`templates/paper_contract.md`](templates/paper_contract.md) or the files in [`templates/research_project/`](templates/research_project/).
 4. Turn real sources into [`templates/literature_card.md`](templates/literature_card.md), and register them in [`registry/literature.yaml`](registry/literature.yaml).
