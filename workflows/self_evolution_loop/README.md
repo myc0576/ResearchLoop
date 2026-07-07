@@ -65,6 +65,8 @@ The runner may create:
   `pending validation`
 - `registry/workflow_improvement_backlog.yaml` entries with status
   `pending validation`
+- visual-to-editable prompts, manifests, QA summaries, and reproduction notes
+  with candidate or pending-validation status only
 
 Promotion to `validated`, `reusable`, `approved`, `pass`, or `paper_ready`
 requires explicit human review or a separate evidence-backed promotion gate.
@@ -108,6 +110,11 @@ Agents should activate recall or self-evolution when the user says any of:
 `复用`, `资产化`, `候选资产`, `经验沉淀`, `closeout`, `harness closeout`,
 `调用历史`, `查历史`, `参考之前`, `loop`, `一键 loop`, `retro`,
 `写入知识库`, `更新知识库`, `同步 harness`, `沉淀到 harness`.
+
+For visual-to-editable work, the loop should recall router rules, candidate
+external skills, figure cards, prompts, and prior QA before adding new assets.
+The runner should never copy raw visual payloads into knowledge or promote a
+skill candidate solely because a conversion completed.
 
 ## Commands
 

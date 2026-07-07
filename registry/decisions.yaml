@@ -330,6 +330,29 @@ decisions:
   last_reviewed_at: '2026-07-06T00:00:00+08:00'
   quality_level: bronze
   superseded_by: ''
+- id: 20260707_visual_to_editable_asset_router
+  date: '2026-07-07'
+  project_id: researchloop
+  decision: Add visual-to-editable reconstruction as a Figure Loop and closeout router, with external tools kept outside ResearchLoop and only manifests, prompts, QA, and sanitized examples stored here.
+  changed_route_or_assumption: true
+  path: G:\BaiduSyncdisk\ResearchLoop\decisions\20260707_visual_to_editable_asset_router.md
+  status: pending validation
+  evidence_refs:
+  - G:\BaiduSyncdisk\ResearchLoop\workflows\visual_to_editable\README.md
+  - G:\BaiduSyncdisk\ResearchLoop\workflows\visual_to_editable\router_rules.yaml
+  - G:\BaiduSyncdisk\ResearchLoop\examples\visual_to_editable_minimal\visual_reconstruction_manifest.yaml
+  updated_at: '2026-07-07'
+  created_at: '2026-07-07'
+  last_verified_at: ''
+  verification_due_days: 7
+  encoding_status: ok
+  confidence: 0.45
+  confidence_reason: workflow governance and router contract implemented as pending validation until validator stack and real sanitized case evidence pass
+  reference_count: 1
+  last_used_at: ''
+  last_reviewed_at: '2026-07-07T00:00:00+08:00'
+  quality_level: bronze
+  superseded_by: ''
 - id: 20260706_sc_nmt_paper_sprint_template_manuscript_route
   date: '2026-07-06'
   project_id: sc-nmt

@@ -4,6 +4,16 @@
 
 [中文 README](README.zh-CN.md)
 
+ResearchLoop 不是通用知识库，也不是另一个 AI agent。每个科研项目都不一样，所以这个仓库不承诺提供一套固定、通用、开箱即用的科学工作流。
+
+它做的是更窄也更耐用的事：在真实科研发生的过程中，帮助你稳定、验证、复用并迭代自己的研究工作流。
+
+当你完成一次文献任务，它可以沉淀为 literature intake card。当你做了一页组会 slide，它可以沉淀为 figure 或 PPT asset。当你决定一个 claim、baseline、metric 或 limitation，它可以进入 claim-evidence matrix 和 decision record。当 Codex、Claude Code、Cursor 或其他 agent 完成一个研究任务，ResearchLoop 给 closeout 步骤一个地方，把有用经验写回 workflow memory。
+
+ResearchLoop 是 Codex、Claude Code、Cursor 和类似 coding agent 的本地外置大脑。它不替代这些 agent，不内置 LLM，也不要求额外的模型 API key。它负责存储、检索、审查、验证和演化 reusable knowledge、reusable prompts、research and figure assets、decision records、paper workflows、claim-evidence links 和 feedback loops。
+
+---
+
 ResearchLoop is not a generic knowledge base, and it is not another AI agent. Every research project is different, so this repository does not promise a fixed, universal, ready-made scientific workflow.
 
 It does something narrower and more durable: it helps you stabilize, validate, reuse, and iterate your own research workflow while real research is happening.
@@ -22,13 +32,14 @@ ResearchLoop does not train AI to do research for you. It helps you train a work
 
 ## Loop Map
 
-[Paper Loop](workflows/paper_driven/paper_loop.md) · [Literature Loop](workflows/paper_driven/literature_intake.md) · [Figure Loop](workflows/paper_driven/figure_intake.md) · [Evidence Loop](templates/research_project/03_claim_evidence_matrix.yaml) · [Closeout Loop](workflows/paper_driven/experiment_closeout.md) · [Self-Evolution Loop](workflows/self_evolution_loop/README.md)
+[Paper Loop](workflows/paper_driven/paper_loop.md) · [Literature Loop](workflows/paper_driven/literature_intake.md) · [Figure Loop](workflows/paper_driven/figure_intake.md) · [Visual-To-Editable Loop](workflows/visual_to_editable/README.md) · [Evidence Loop](templates/research_project/03_claim_evidence_matrix.yaml) · [Closeout Loop](workflows/paper_driven/experiment_closeout.md) · [Self-Evolution Loop](workflows/self_evolution_loop/README.md)
 
 | Loop | What it captures | Current support |
 |---|---|---|
 | Paper Loop | research brief, target-paper distillation, gap/contribution, manuscript storyboard, release pack | Workflow, templates, minimal example, validator |
 | Literature Loop | literature cards, evidence use, citation locations, limitations | Workflow, card template, registry, placeholder example |
 | Figure Loop | visual references, figure cards, figure registry, rights/release notes | Workflow, card template, registry, internal examples |
+| Visual-To-Editable Loop | image/screenshot/PDF/chart/table/flowchart/formula/UI inputs routed to editable PPT/SVG/HTML/Mermaid/Figma-style assets | Router rules, CLI validation, templates, sanitized example |
 | Evidence Loop | claim-evidence matrix, data/code links, baselines, limitations | Template and validator-backed example |
 | Closeout Loop | reusable knowledge, prompts, assets, decisions, registry updates | Workflow plus `closeout_check.py` |
 | Self-Evolution Loop | recall, intake, candidate writeback, validation, next bottleneck | Local CLI with tests; promotion remains human-controlled |
@@ -55,6 +66,7 @@ ResearchLoop does not train AI to do research for you. It helps you train a work
 | Paper-driven workflow | [`workflows/paper_driven/paper_loop.md`](workflows/paper_driven/paper_loop.md), [`templates/research_project/`](templates/research_project/), [`examples/paper_lifecycle_minimal/`](examples/paper_lifecycle_minimal/) | Usable scaffold |
 | Literature intake / literature card | [`workflows/paper_driven/literature_intake.md`](workflows/paper_driven/literature_intake.md), [`templates/literature_card.md`](templates/literature_card.md), [`registry/literature.yaml`](registry/literature.yaml) | Template plus placeholder example |
 | Figure intake / figure registry | [`workflows/paper_driven/figure_intake.md`](workflows/paper_driven/figure_intake.md), [`templates/figure_card.md`](templates/figure_card.md), [`registry/figures.yaml`](registry/figures.yaml), [`visual_refs/`](visual_refs/) | Template plus internal examples |
+| Visual-to-editable router | [`workflows/visual_to_editable/`](workflows/visual_to_editable/), [`scripts/visual_to_editable_router.py`](scripts/visual_to_editable_router.py), [`registry/visual_to_editable_skills.yaml`](registry/visual_to_editable_skills.yaml), [`examples/visual_to_editable_minimal/`](examples/visual_to_editable_minimal/) | Spec plus local validator; external tools remain candidates |
 | Claim-evidence matrix | [`templates/research_project/03_claim_evidence_matrix.yaml`](templates/research_project/03_claim_evidence_matrix.yaml), [`examples/paper_lifecycle_minimal/03_claim_evidence_matrix.yaml`](examples/paper_lifecycle_minimal/03_claim_evidence_matrix.yaml) | Template and minimal example |
 | Reviewer gate | [`workflows/paper_driven/reviewer_gate.md`](workflows/paper_driven/reviewer_gate.md) | Manual checklist gate |
 | Task closeout | [`workflows/paper_driven/experiment_closeout.md`](workflows/paper_driven/experiment_closeout.md), [`scripts/closeout_check.py`](scripts/closeout_check.py) | Working governance check |
@@ -87,9 +99,10 @@ flowchart LR
 3. Start a paper with [`templates/paper_contract.md`](templates/paper_contract.md) or the files in [`templates/research_project/`](templates/research_project/).
 4. Turn real sources into [`templates/literature_card.md`](templates/literature_card.md), and register them in [`registry/literature.yaml`](registry/literature.yaml).
 5. Turn useful visuals into [`templates/figure_card.md`](templates/figure_card.md), and register them in [`registry/figures.yaml`](registry/figures.yaml).
-6. Bind claims to evidence with [`templates/research_project/03_claim_evidence_matrix.yaml`](templates/research_project/03_claim_evidence_matrix.yaml).
-7. End each task with the closeout rules in [`workflows/paper_driven/experiment_closeout.md`](workflows/paper_driven/experiment_closeout.md).
-8. Run validators before publishing or relying on the registry state.
+6. When a flat visual needs editable assets, classify it with [`scripts/visual_to_editable_router.py`](scripts/visual_to_editable_router.py), then keep the reconstruction prompt, manifest, QA, and reproduction note.
+7. Bind claims to evidence with [`templates/research_project/03_claim_evidence_matrix.yaml`](templates/research_project/03_claim_evidence_matrix.yaml).
+8. End each task with the closeout rules in [`workflows/paper_driven/experiment_closeout.md`](workflows/paper_driven/experiment_closeout.md).
+9. Run validators before publishing or relying on the registry state.
 
 ## Commands
 
@@ -103,6 +116,9 @@ python scripts\validate_research_project.py --project-root examples\paper_lifecy
 python scripts\validate_asset_evolution.py --registry registry\asset_evolution.yaml --json
 python scripts\evaluator.py evaluate --target all --json
 python scripts\closeout_check.py
+
+python scripts\visual_to_editable_router.py classify --request examples\visual_to_editable_minimal\request.yaml --json
+python scripts\visual_to_editable_router.py validate-case --case-dir examples\visual_to_editable_minimal --json
 
 python scripts\self_evolution_loop.py recall --query "paper closeout reusable workflow" --project-root G:\BaiduSyncdisk\ResearchLoop --json
 python scripts\self_evolution_loop.py run --intake <intake.yaml> --apply-candidates --json
@@ -129,3 +145,8 @@ Do not commit:
 - `research_assets/` binaries beyond small Markdown manifests and reproduction notes.
 
 ResearchLoop should point to sensitive or large material through explicit, local-only references when needed. It should not copy that material into the repository.
+
+Visual-to-editable reconstruction follows the same rule: keep source screenshots,
+PDFs, private figures, final figures, generated PPTX files, and tool traces
+outside the repository. Commit only prompts, manifests, QA summaries,
+reproduction notes, registry entries, and sanitized text examples.

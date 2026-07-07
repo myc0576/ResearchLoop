@@ -1,0 +1,50 @@
+schema: researchloop.visual_reconstruction_manifest.v1
+reconstruction_id: YYYYMMDD_visual_to_editable_task
+project_id: ''
+status: pending validation
+selected_route: ''
+external_tool:
+  id: ''
+  upstream_url: ''
+  execution_boundary: external_agent
+source_policy:
+  source_reference: ''
+  input_type: ''
+  sensitivity: private_or_sanitized
+  commit_allowed: false
+  committed_source_paths: []
+  forbidden_payloads:
+    - raw_large_images
+    - private_experiment_figures
+    - final_submission_figures
+    - pdf_originals
+    - generated_pptx_outputs
+prompt_path: visual_reconstruction_prompt.md
+output_paths:
+  editable_assets: []
+  output_manifest: ''
+  qa_report: visual_reconstruction_qa.md
+editable_output_inventory:
+  text_objects: 0
+  vector_shapes: 0
+  native_charts: 0
+  editable_tables: 0
+  formulas: 0
+  raster_backgrounds: 0
+qa:
+  editability_score: 0.0
+  editable_text_count: 0
+  ocr_text_alignment_status: pending
+  layout_overlap_score: 0.0
+  render_comparison_status: pending
+  full_slide_background_residue: unknown
+  manual_review_status: pending
+reproduction_command: ''
+closeout_links:
+  figure_card: ''
+  prompt_card: ''
+  output_manifest: ''
+  reproduction_entry: reproduction_entry.md
+  qa_report: visual_reconstruction_qa.md
+human_approved: false
+updated_at: YYYY-MM-DD

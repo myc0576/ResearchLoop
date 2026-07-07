@@ -15,6 +15,7 @@ Run this workflow at the end of every research task, including literature-only, 
    - Did this produce reusable knowledge?
    - Did this produce a reusable prompt?
    - Did this produce project research assets?
+   - Did this reconstruct a flat visual into editable PPT/SVG/HTML/Mermaid/Figma-style assets?
    - Did this require a decision record?
 4. Registry update
    - Update `registry/papers.yaml` when a paper contract changes.
@@ -32,6 +33,10 @@ Run this workflow at the end of every research task, including literature-only, 
 - ResearchLoop workflow rules, templates, registries, and decisions stay in `G:\BaiduSyncdisk\ResearchLoop`.
 - ResearchLoop stores paper templates, workflows, indexes, registry cards, and decision records only; it is not the manuscript or submission package directory.
 - Raw experiment data, PDFs, large binaries, and temporary intermediate outputs are not copied into knowledge.
+- Visual-to-editable reconstruction outputs must keep raw source visuals,
+  private figures, final submission figures, generated PPTX files, and tool
+  traces outside ResearchLoop. Store only local references, prompts, manifests,
+  QA summaries, reproduction notes, registry entries, and sanitized examples.
 
 ## Status Discipline
 
@@ -39,3 +44,5 @@ Run this workflow at the end of every research task, including literature-only, 
 - Use `hypothesis` for plausible but unverified scientific statements.
 - Use `pending validation` when evidence is planned, partial, or not yet reproduced.
 - Keep paper-readiness and approval state human-controlled.
+- Do not auto-promote visual-to-editable skill candidates or reconstruction
+  manifests to `validated`; promotion requires evidence and human review.

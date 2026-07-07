@@ -40,6 +40,27 @@ the current task context before running writeback. The runner writes
 Automatic writeback is candidate-first only. Do not auto-promote to
 `validated`, `reusable`, `approved`, `pass`, or `paper_ready`.
 
+## Visual-To-Editable
+
+When a task asks to convert an image, screenshot, PDF page, chart, table,
+scientific figure, flowchart, formula image, or UI screenshot into editable
+assets, treat it as a Figure Loop / closeout extension. Do not treat
+ResearchLoop as the converter.
+
+Use the router first:
+
+```powershell
+python G:\BaiduSyncdisk\ResearchLoop\scripts\visual_to_editable_router.py classify --request <request.yaml> --json
+python G:\BaiduSyncdisk\ResearchLoop\scripts\visual_to_editable_router.py validate-manifest --manifest <visual_reconstruction_manifest.yaml> --json
+python G:\BaiduSyncdisk\ResearchLoop\scripts\visual_to_editable_router.py validate-case --case-dir <case_dir> --json
+```
+
+Actual reconstruction stays with Claude Code, Codex, Cursor, or an external
+skill. ResearchLoop stores only templates, prompts, manifests, QA summaries,
+reproduction notes, registry entries, and sanitized examples. Do not commit raw
+screenshots, PDFs, private experiment figures, final paper figures, generated
+PPTX files, large binaries, credentials, or tool traces.
+
 ## Verification
 
 After edits, run the relevant focused tests plus the harness validation chain:
@@ -47,6 +68,7 @@ After edits, run the relevant focused tests plus the harness validation chain:
 ```powershell
 $env:PYTEST_DISABLE_PLUGIN_AUTOLOAD = '1'
 python -m pytest
+python scripts\visual_to_editable_router.py validate-case --case-dir examples\visual_to_editable_minimal --json
 python scripts\registry_tool.py validate
 python scripts\evaluator.py evaluate --target all --json
 python scripts\kb_index.py rebuild

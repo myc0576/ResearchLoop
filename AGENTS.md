@@ -37,6 +37,30 @@ G:\knowledge\reusable_prompts
 
 每次完成 SC-NMT 或其他科研项目任务后，必须执行 task closeout。只有当任务确实产生可复用内容、证据、素材或路线变化时，才写入对应沉淀文件；不要为了整理而整理。
 
+## Visual-To-Editable Skills
+
+`visual-to-editable-skills` 是 Figure Loop 和 research asset closeout 的扩展，不是独立图片转 PPT 工具。它负责把图片、截图、PDF、图表、科研图、流程图、公式图、UI 图等不可编辑视觉输入路由到可编辑 PPT/SVG/HTML/Mermaid/Figma 风格资产的工作流。
+
+标准入口：
+
+```powershell
+python G:\BaiduSyncdisk\ResearchLoop\scripts\visual_to_editable_router.py classify --request <request.yaml> --json
+python G:\BaiduSyncdisk\ResearchLoop\scripts\visual_to_editable_router.py validate-manifest --manifest <visual_reconstruction_manifest.yaml> --json
+python G:\BaiduSyncdisk\ResearchLoop\scripts\visual_to_editable_router.py validate-case --case-dir <case_dir> --json
+```
+
+ResearchLoop 只保存 router、模板、manifest、prompt、QA、registry 和脱敏示例；不内置 LLM，不 vendor 外部转换项目，不提交原始大图、私密实验图、最终投稿图、PDF、生成 PPTX、大文件或工具 trace。实际重建由 Codex、Claude Code、Cursor 或外部 skill 执行。
+
+每次成功重建后，必须沉淀：
+
+- visual reference 或 figure card；
+- reconstruction prompt；
+- output manifest；
+- reproduction note；
+- QA result；
+- registry 更新；
+- 如果改变路线、标准或安全边界，补 decision record。
+
 ## One-Click Self-Evolution
 
 当用户在 `G:\` 工作区任务中说 `自进化`、`沉淀`、`更新`、`更新 harness`、`写回`、`写入 harness`、`知识库`、`复用`、`资产化`、`候选资产`、`经验沉淀`、`closeout`、`harness closeout`、`调用历史`、`查历史`、`参考之前`、`loop`、`一键 loop`、`retro`、`写入知识库`、`更新知识库`、`同步 harness` 或 `沉淀到 harness` 时，先走 self-evolution loop，而不是只做口头总结。
@@ -122,6 +146,7 @@ ResearchLoop 适用于整个 `G:\` 科研工作区，不只适用于 `G:\project
 - 如果产生可复用 knowledge，写入 `G:\knowledge\reusable_knowledge\<category>` 并更新 `registry\knowledge.yaml`。
 - 如果产生可复用 prompt，写入 `G:\knowledge\reusable_prompts\<category>` 并更新 `registry\prompts.yaml`。
 - 如果产生项目素材、脚本、报告、图、PPT、CAD 文件、日志或复现入口，写入当前项目 `research_assets\YYYYMMDD_task_name` 的 manifest/reproduction entry，并更新 `registry\research_assets.yaml`。
+- 如果产生可编辑化视觉资产，必须记录 visual reconstruction manifest、prompt、QA 和 reproduction entry；只保存脱敏文本示例或本地路径引用。
 - 如果改变路线、假设、设计标准或 closeout 规则，写入 decision record 并更新 `registry\decisions.yaml`。
 - 如果没有可沉淀内容，最终回复必须明确说明：`closeout checked: no reusable assets`。
 

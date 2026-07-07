@@ -40,6 +40,7 @@ REGISTRY_FILES = {
     "asset_evolution": REGISTRY_DIR / "asset_evolution.yaml",
     "workflow_improvement_backlog": REGISTRY_DIR / "workflow_improvement_backlog.yaml",
     "decisions": REGISTRY_DIR / "decisions.yaml",
+    "visual_to_editable_skills": REGISTRY_DIR / "visual_to_editable_skills.yaml",
     "ppt_assets": REGISTRY_DIR / "ppt_assets.yaml",
     "model_assets": REGISTRY_DIR / "model_assets.yaml",
     "feedback": REGISTRY_DIR / "feedback.yaml",

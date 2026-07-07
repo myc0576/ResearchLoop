@@ -1,0 +1,22 @@
+schema: researchloop.visual_to_editable_request.v1
+request_id: 20260707_visual_to_editable_minimal_flowchart
+source:
+  reference: local_only:sanitized_flowchart_placeholder
+  path: ''
+  input_type: flowchart
+  sensitivity: sanitized_example
+  commit_policy: sanitized_text_only
+  commit_allowed: false
+visual_signals:
+  - arrow
+  - node
+  - connector
+  - process_flow
+target_outputs:
+  - mermaid
+  - svg
+intended_use:
+  - workflow_documentation
+  - figure_loop_example
+route_hint: ''
+notes: Text-only sample for validating ResearchLoop routing and closeout shape.

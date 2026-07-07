@@ -10,6 +10,12 @@ Use this workflow for paper figures, visual layouts, reference styles, and figur
 - Do not treat attractive style as scientific evidence.
 - Do not publish third-party figures unless rights and citation requirements are satisfied.
 - Keep original experimental image data in the project tree, not in `visual_refs/`.
+- When a flat visual needs editable outputs, route it through
+  `workflows/visual_to_editable/README.md` and
+  `scripts/visual_to_editable_router.py` before reconstruction.
+- ResearchLoop stores reconstruction prompts, manifests, QA summaries, and
+  reproduction notes. It does not store raw screenshots, private experiment
+  figures, PDFs, generated PPTX files, or final paper figures.
 
 ## Suggested Layout
 
@@ -36,6 +42,9 @@ For copyrighted papers, prefer a small internal reference crop, citation metadat
    - reviewer risk.
 3. Register the card in `registry/figures.yaml`.
 4. If the figure is part of the user's own paper, bind it back to `templates/paper_contract.md` and `templates/evidence_table.md`.
+5. If editable reconstruction succeeds, add the reconstruction prompt, output
+   manifest, reproduction entry, QA report, and any route-changing decision
+   record to closeout.
 
 ## Domain Lens
 

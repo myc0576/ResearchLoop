@@ -140,3 +140,12 @@ legacy_contract_seeds:
       - text_objects_are_editable
       - slide_source_manifest_exists
       - figures_are_paper_level_or_marked_draft
+  visual_to_editable_quality:
+    required_checks:
+      - route_selected_by_visual_to_editable_router
+      - reconstruction_prompt_exists
+      - visual_reconstruction_manifest_exists
+      - reproduction_entry_exists
+      - qa_report_records_editability_text_alignment_layout_and_background_residue
+      - no_raw_visual_payload_committed_to_researchloop
+      - external_skill_candidates_remain_pending_until_evidence_and_human_review

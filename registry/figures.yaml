@@ -45,3 +45,26 @@ figures:
     last_reviewed_at: '2026-07-03T00:00:00+08:00'
     quality_level: bronze
     superseded_by: ''
+  - id: fig_20260707_visual_to_editable_minimal_flowchart
+    title: Minimal visual-to-editable flowchart route example
+    source_project: researchloop
+    status: pending validation
+    path: G:\BaiduSyncdisk\ResearchLoop\examples\visual_to_editable_minimal\figure_card.md
+    visual_ref_dir: G:\BaiduSyncdisk\ResearchLoop\examples\visual_to_editable_minimal
+    figure_type: visual_to_editable_workflow_example
+    claim_id: visual_to_editable_example_no_scientific_claim
+    paper_id: ''
+    source: sanitized_text_fixture
+    evidence_use: Internal example showing flowchart-to-Mermaid/SVG routing and closeout shape; not scientific evidence.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.45
+    confidence_reason: text-only example added with route request, manifest, QA, figure card, and reproduction entry; pending validator run
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''

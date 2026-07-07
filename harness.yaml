@@ -44,6 +44,7 @@ registries:
   asset_evolution: 'G:\BaiduSyncdisk\ResearchLoop\registry\asset_evolution.yaml'
   workflow_improvement_backlog: 'G:\BaiduSyncdisk\ResearchLoop\registry\workflow_improvement_backlog.yaml'
   decisions: 'G:\BaiduSyncdisk\ResearchLoop\registry\decisions.yaml'
+  visual_to_editable_skills: 'G:\BaiduSyncdisk\ResearchLoop\registry\visual_to_editable_skills.yaml'
   ppt_assets: 'G:\BaiduSyncdisk\ResearchLoop\registry\ppt_assets.yaml'
   model_assets: 'G:\BaiduSyncdisk\ResearchLoop\registry\model_assets.yaml'
   feedback: 'G:\BaiduSyncdisk\ResearchLoop\registry\feedback.yaml'
@@ -63,6 +64,9 @@ automation:
   self_evolution_workflow: 'G:\BaiduSyncdisk\ResearchLoop\workflows\self_evolution_loop\README.md'
   self_evolution_intake_template: 'G:\BaiduSyncdisk\ResearchLoop\templates\self_evolution_intake.yaml'
   self_evolution_contract_template: 'G:\BaiduSyncdisk\ResearchLoop\templates\self_evolution_contract.md'
+  visual_to_editable_router: 'G:\BaiduSyncdisk\ResearchLoop\scripts\visual_to_editable_router.py'
+  visual_to_editable_workflow: 'G:\BaiduSyncdisk\ResearchLoop\workflows\visual_to_editable\README.md'
+  visual_to_editable_rules: 'G:\BaiduSyncdisk\ResearchLoop\workflows\visual_to_editable\router_rules.yaml'
 
 search:
   canonical_engine: sqlite_fts5
@@ -89,6 +93,9 @@ quality:
     - validated_without_evidence
     - research_asset_missing_manifest
     - research_asset_missing_reproduction_entry
+    - visual_reconstruction_missing_qa
+    - visual_reconstruction_forbidden_payload
+    - visual_reconstruction_unsafe_validated_status
 
 confidence:
   defaults:
@@ -170,16 +177,17 @@ knowledge_categories:
   - experimental_system
   - mechanical_modeling
 
-prompt_categories:
-  - codex
-  - claude
-  - chatgpt
-  - scientific_visualization
-  - paper_writing
-  - project_review
+  prompt_categories:
+    - codex
+    - claude
+    - chatgpt
+    - visual_to_editable
+    - scientific_visualization
+    - paper_writing
+    - project_review
   - cad_mechanical_modeling
 
-rules:
+  rules:
   no_large_data_in_knowledge: true
   no_literature_pdf_originals_in_reusable_knowledge: true
   small_paper_manuscript_figures_and_submission_default_to_docs_root: true
@@ -195,10 +203,15 @@ rules:
   sqlite_fts5_is_canonical_search: true
   openviking_is_not_canonical_search: true
   asset_evolution_default_status: candidate
-  self_evolution_loop_enabled: true
-  self_evolution_candidate_first: true
-  self_evolution_requires_agent_generated_intake: true
-  auto_safe_fixes_enabled: true
+    self_evolution_loop_enabled: true
+    self_evolution_candidate_first: true
+    self_evolution_requires_agent_generated_intake: true
+    visual_to_editable_router_enabled: true
+    visual_to_editable_external_execution_only: true
+    visual_to_editable_no_vendored_external_skills: true
+    visual_to_editable_requires_prompt_manifest_qa_reproduction: true
+    visual_to_editable_forbid_committed_raw_visual_payloads: true
+    auto_safe_fixes_enabled: true
   auto_safe_fix_allowlist:
     - fill_v2_metadata_fields
     - update_reference_counts

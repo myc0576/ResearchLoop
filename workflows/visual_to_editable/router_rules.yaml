@@ -1,0 +1,250 @@
+version: 1
+router_id: visual_to_editable.router.v1
+default_route: manual_review
+forbidden_repo_extensions:
+  - .png
+  - .jpg
+  - .jpeg
+  - .tif
+  - .tiff
+  - .bmp
+  - .gif
+  - .webp
+  - .pdf
+  - .pptx
+  - .mp4
+  - .mov
+allowed_text_asset_extensions:
+  - .md
+  - .yaml
+  - .yml
+  - .json
+  - .txt
+  - .csv
+  - .mmd
+  - .svg
+routes:
+  - id: scientific_figure_tracing
+    priority: 80
+    input_types:
+      - scientific_figure
+      - paper_figure
+      - microscopy_image
+      - tomography_render
+      - plot_image
+    visual_signals:
+      - axis
+      - colorbar
+      - scale_bar
+      - scientific_plot
+      - microscopy
+      - tomography
+      - figure_panel
+      - annotation_heavy
+    target_outputs:
+      - pptx
+      - svg
+      - html
+      - figure_card
+    external_tool_candidates:
+      - ningzimu_image_to_editable_ppt_skill
+      - tatezhousiu_image_ppt_king
+    closeout_required:
+      - figure_card
+      - visual_reconstruction_prompt
+      - visual_reconstruction_manifest
+      - visual_reconstruction_qa
+      - reproduction_entry
+    safety_notes:
+      - Do not treat style tracing as scientific evidence.
+      - Keep raw experiment imagery and final paper figures outside ResearchLoop.
+  - id: ppt_screenshot_reconstruction
+    priority: 90
+    input_types:
+      - slide_screenshot
+      - slide_image
+      - image_based_pptx
+      - pdf_page
+      - slide_pdf
+      - deck_screenshot
+    visual_signals:
+      - slide
+      - title
+      - text_heavy
+      - card_layout
+      - callout
+      - icon
+      - dense_layout
+      - cjk_text
+    target_outputs:
+      - pptx
+      - editable_text
+      - native_shapes
+      - render_qa
+    external_tool_candidates:
+      - ningzimu_image_to_editable_ppt_skill
+      - lirunjie0510_ppt_visual_reconstruction
+      - w1163222589_slide_image_to_editable_pptx
+      - knight6669_knight_imagetopptx_skill
+      - soulmujoco_editableimage2pptskill
+      - tatezhousiu_image_ppt_king
+    closeout_required:
+      - visual_reconstruction_prompt
+      - visual_reconstruction_manifest
+      - visual_reconstruction_qa
+      - output_manifest
+      - reproduction_entry
+    safety_notes:
+      - Preserve text and simple geometry as editable objects when possible.
+      - Check that no full-slide background screenshot remains as the only layer.
+  - id: native_chart_rebuild
+    priority: 85
+    input_types:
+      - chart
+      - graph
+      - plot
+      - data_chart
+      - chart_screenshot
+    visual_signals:
+      - axis
+      - legend
+      - tick_labels
+      - data_series
+      - bar_chart
+      - line_chart
+      - scatter_plot
+    target_outputs:
+      - native_chart
+      - csv
+      - pptx
+      - plotting_script
+    external_tool_candidates:
+      - ningzimu_image_to_editable_ppt_skill
+    closeout_required:
+      - data_source_reference
+      - reconstruction_prompt
+      - qa_report
+      - reproduction_entry
+    safety_notes:
+      - Do not infer data values silently from pixels for scientific claims.
+      - Mark digitized values as pending validation unless source data is provided.
+  - id: editable_table_rebuild
+    priority: 85
+    input_types:
+      - table
+      - table_screenshot
+      - spreadsheet_screenshot
+      - pdf_table
+    visual_signals:
+      - rows
+      - columns
+      - grid
+      - table_header
+      - numeric_cells
+      - merged_cells
+    target_outputs:
+      - csv
+      - xlsx
+      - markdown_table
+      - ppt_table
+    external_tool_candidates:
+      - knight6669_knight_imagetopptx_skill
+    closeout_required:
+      - source_reference
+      - editable_table_output
+      - qa_report
+      - reproduction_entry
+    safety_notes:
+      - Treat OCR table extraction as pending validation until manually checked.
+      - Preserve units, footnotes, and uncertainty markers.
+  - id: flowchart_to_mermaid_svg
+    priority: 88
+    input_types:
+      - flowchart
+      - workflow_diagram
+      - process_map
+      - pipeline_diagram
+      - block_diagram
+    visual_signals:
+      - arrow
+      - node
+      - connector
+      - decision_diamond
+      - swimlane
+      - process_flow
+    target_outputs:
+      - mermaid
+      - svg
+      - pptx
+      - html
+    external_tool_candidates:
+      - knight6669_knight_imagetopptx_skill
+      - w1163222589_slide_image_to_editable_pptx
+    closeout_required:
+      - mermaid_source
+      - svg_output
+      - qa_report
+      - reproduction_entry
+    safety_notes:
+      - Keep diagram meaning separate from visual style imitation.
+      - Prefer Mermaid when topology matters more than visual fidelity.
+  - id: formula_to_latex_ppt
+    priority: 86
+    input_types:
+      - formula
+      - equation
+      - formula_screenshot
+      - equation_panel
+    visual_signals:
+      - math
+      - equation
+      - latex
+      - greek_symbols
+      - superscript
+      - subscript
+    target_outputs:
+      - latex
+      - ppt_equation
+      - svg
+      - markdown
+    external_tool_candidates:
+      - ningzimu_image_to_editable_ppt_skill
+    closeout_required:
+      - latex_source
+      - formula_review
+      - qa_report
+      - reproduction_entry
+    safety_notes:
+      - Formula recognition requires human review before scientific reuse.
+      - Do not change symbols or units to improve appearance.
+  - id: ui_to_html_figma_ppt
+    priority: 82
+    input_types:
+      - ui_screenshot
+      - dashboard_screenshot
+      - app_mockup
+      - webpage_screenshot
+    visual_signals:
+      - button
+      - input_field
+      - navbar
+      - sidebar
+      - card_layout
+      - dashboard
+      - component
+    target_outputs:
+      - html
+      - figma
+      - pptx
+      - design_tokens
+    external_tool_candidates:
+      - tatezhousiu_image_ppt_king
+      - stevenjinlong_awesome_ppt_skills
+    closeout_required:
+      - component_inventory
+      - reconstruction_prompt
+      - qa_report
+      - reproduction_entry
+    safety_notes:
+      - Do not copy third-party UI assets beyond internal reference use.
+      - Use sanitized examples for any public repository material.

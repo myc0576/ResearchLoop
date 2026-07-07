@@ -8,3 +8,7 @@ Rules:
 - External paper figures need citation and release notes.
 - Keep raw experiment data and generated scientific outputs in the project tree.
 - Register reusable or paper-bound visual references in `registry/figures.yaml`.
+- If a visual reference is reconstructed into editable assets, keep the source
+  visual as a local-only reference unless it is explicitly sanitized. Store the
+  reconstruction prompt, manifest, QA summary, and reproduction note with the
+  current project's closeout assets, not as raw binaries in `visual_refs/`.

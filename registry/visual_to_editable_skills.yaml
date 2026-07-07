@@ -1,0 +1,199 @@
+version: 1
+visual_to_editable_skills:
+  - id: ningzimu_image_to_editable_ppt_skill
+    title: image-to-editable-ppt-skill
+    upstream_url: https://github.com/ningzimu/image-to-editable-ppt-skill
+    route_tags:
+      - ppt_screenshot_reconstruction
+      - ppt_image_pdf_reconstruction
+      - slide_text_geometry_rebuild
+    output_types:
+      - pptx
+      - manifest
+      - validation_report
+    status: pending validation
+    validation_method: Use only as an external agent skill; record prompt, manifest, render QA, and closeout links before any promotion.
+    safety_notes:
+      - Do not vendor this repository into ResearchLoop.
+      - Do not commit source images, PDFs, private slides, generated traces, or final PPTX outputs.
+      - Keep API tokens and OCR credentials in user-level configuration only.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.45
+    confidence_reason: external skill candidate registered for routing; no ResearchLoop reconstruction case validated yet
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''
+  - id: lirunjie0510_ppt_visual_reconstruction
+    title: ppt-visual-reconstruction
+    upstream_url: https://github.com/lirunjie0510/ppt-visual-reconstruction
+    route_tags:
+      - ppt_screenshot_reconstruction
+      - high_fidelity_slide_rebuild
+      - render_comparison_qa
+    output_types:
+      - pptx
+      - render_preview
+      - qa_report
+    status: pending validation
+    validation_method: Use for difficult slide screenshots only after recording page-level reconstruction and render comparison evidence.
+    safety_notes:
+      - External workflow candidate only; ResearchLoop stores route metadata and QA summaries, not raw slides.
+      - Do not mark reusable until a sanitized reconstruction passes local closeout.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.45
+    confidence_reason: external high-fidelity PPT reconstruction candidate pending local evidence
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''
+  - id: w1163222589_slide_image_to_editable_pptx
+    title: slide-image-to-editable-pptx
+    upstream_url: https://github.com/w1163222589-coder/slide-image-to-editable-pptx
+    route_tags:
+      - ppt_screenshot_reconstruction
+      - layered_slide_rebuild
+      - native_text_shape_rebuild
+    output_types:
+      - pptx
+      - editable_text
+      - native_shapes
+    status: pending validation
+    validation_method: Candidate for slide screenshot decomposition into visual assets, structure, and content layers.
+    safety_notes:
+      - Record output object inventory and background residue check before accepting a reconstruction.
+      - Keep source screenshots as local-only references unless explicitly sanitized.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.45
+    confidence_reason: external layered PPTX rebuild candidate pending local validation
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''
+  - id: knight6669_knight_imagetopptx_skill
+    title: knight-imagetopptx-skill
+    upstream_url: https://github.com/knight6669/knight-imagetopptx-skill
+    route_tags:
+      - ppt_screenshot_reconstruction
+      - semantic_slide_rebuild
+      - table_ui_flowchart_slide_rebuild
+    output_types:
+      - pptx
+      - object_inventory
+      - render_qa
+    status: pending validation
+    validation_method: Candidate for object-level PPTX reconstruction with page-by-page visual QA and editable object inventory.
+    safety_notes:
+      - Do not treat semantic reconstruction as scientific evidence.
+      - Require source policy, prompt, manifest, and QA report in closeout.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.45
+    confidence_reason: external semantic PPTX reconstruction candidate pending local evidence
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''
+  - id: soulmujoco_editableimage2pptskill
+    title: EditableImage2PPTSkill
+    upstream_url: https://github.com/soulmujoco/EditableImage2PPTSkill
+    route_tags:
+      - ppt_screenshot_reconstruction
+      - layout_json_rebuild
+      - pptx_inspection
+    output_types:
+      - pptx
+      - layout_json
+      - inspect_report
+    status: pending validation
+    validation_method: Candidate for screenshot to PPTX reconstruction when layout JSON and PPTX inspection evidence are desired.
+    safety_notes:
+      - External tool only; do not add its dependencies to ResearchLoop without explicit approval.
+      - Commit only manifest and QA summaries, not generated PPTX.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.45
+    confidence_reason: external layout JSON PPTX workflow candidate pending local evidence
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''
+  - id: tatezhousiu_image_ppt_king
+    title: image-ppt-king
+    upstream_url: https://github.com/TateZhouSiu/image-ppt-king
+    route_tags:
+      - ppt_screenshot_reconstruction
+      - visual_layer_splitting
+      - qa_report
+    output_types:
+      - pptx
+      - build_manifest
+      - visual_text_qa
+    status: pending validation
+    validation_method: Candidate for visual-layer splitting plus build manifest and text QA evidence.
+    safety_notes:
+      - Do not confuse selectable image objects with fully editable native objects.
+      - Require residual whole-slide background check before accepting.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.45
+    confidence_reason: external visual layer splitting workflow candidate pending local validation
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''
+  - id: stevenjinlong_awesome_ppt_skills
+    title: awesome-ppt-skills
+    upstream_url: https://github.com/stevenjinlong/awesome-ppt-skills
+    route_tags:
+      - ppt_generation_reference
+      - editable_ppt_experimental
+      - ui_to_html_figma_ppt
+    output_types:
+      - pptx
+      - reconstruction_brief
+      - style_prompt
+    status: pending validation
+    validation_method: Reference candidate for prompt-to-PPT and experimental editable reconstruction; use as inspiration, not as the default reconstruction backend.
+    safety_notes:
+      - This is not the default route for converting existing research figures.
+      - Do not use generated slide images as scientific evidence.
+    updated_at: '2026-07-07'
+    created_at: '2026-07-07'
+    last_verified_at: ''
+    verification_due_days: 7
+    encoding_status: ok
+    confidence: 0.40
+    confidence_reason: reference collection candidate; routing use is narrower than direct image-to-editable reconstruction skills
+    reference_count: 1
+    last_used_at: ''
+    last_reviewed_at: '2026-07-07T00:00:00+08:00'
+    quality_level: bronze
+    superseded_by: ''

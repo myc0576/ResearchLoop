@@ -1,0 +1,52 @@
+schema: researchloop.visual_reconstruction_manifest.v1
+reconstruction_id: 20260707_visual_to_editable_minimal_flowchart
+project_id: researchloop
+status: pending validation
+selected_route: flowchart_to_mermaid_svg
+external_tool:
+  id: agent_native_mermaid
+  upstream_url: ''
+  execution_boundary: external_agent
+source_policy:
+  source_reference: local_only:sanitized_flowchart_placeholder
+  input_type: flowchart
+  sensitivity: sanitized_example
+  commit_allowed: false
+  committed_source_paths: []
+  forbidden_payloads:
+    - raw_large_images
+    - private_experiment_figures
+    - final_submission_figures
+    - pdf_originals
+    - generated_pptx_outputs
+prompt_path: visual_reconstruction_prompt.md
+output_paths:
+  editable_assets:
+    - outputs/minimal_flowchart.mmd
+    - outputs/minimal_flowchart.svg
+  output_manifest: visual_reconstruction_manifest.yaml
+  qa_report: visual_reconstruction_qa.md
+editable_output_inventory:
+  text_objects: 5
+  vector_shapes: 5
+  native_charts: 0
+  editable_tables: 0
+  formulas: 0
+  raster_backgrounds: 0
+qa:
+  editability_score: 0.9
+  editable_text_count: 5
+  ocr_text_alignment_status: not_applicable_text_source
+  layout_overlap_score: 0.85
+  render_comparison_status: text_fixture_no_render_diff
+  full_slide_background_residue: false
+  manual_review_status: pending
+reproduction_command: python scripts\visual_to_editable_router.py classify --request examples\visual_to_editable_minimal\request.yaml --json
+closeout_links:
+  figure_card: figure_card.md
+  prompt_card: visual_reconstruction_prompt.md
+  output_manifest: visual_reconstruction_manifest.yaml
+  reproduction_entry: reproduction_entry.md
+  qa_report: visual_reconstruction_qa.md
+human_approved: false
+updated_at: 2026-07-07
