@@ -9,6 +9,8 @@ from pathlib import Path
 
 import pytest
 import yaml
+import resevo.mcp_installer as mcp_installer
+from resevo.core import Paths
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -135,6 +137,44 @@ def test_workspace_remove_does_not_delete_workspace_data(tmp_path: Path) -> None
     assert added.returncode == 0, added.stderr + added.stdout
     assert removed.returncode == 0, removed.stderr + removed.stdout
     assert marker.exists()
+
+
+def test_mcp_install_print_is_side_effect_free(tmp_path: Path) -> None:
+    instance = tmp_path / "instance"
+    seed_instance(instance)
+    result = run_cli(instance, "mcp", "install", "codex", "--print")
+    assert result.returncode == 0, result.stderr + result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "dry_run"
+    assert payload["changed"] is False
+    assert not (tmp_path / "resevo-user").exists()
+
+
+def test_unknown_mcp_agent_prints_snippet_without_editing(tmp_path: Path) -> None:
+    instance = tmp_path / "instance"
+    seed_instance(instance)
+    result = run_cli(instance, "mcp", "install", "unknown-agent", "--print")
+    assert result.returncode == 0, result.stderr + result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "unsupported_agent"
+    assert payload["changed"] is False
+
+
+def test_mcp_install_is_idempotent_when_official_get_succeeds(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    paths = Paths(engine=REPO_ROOT, workspace=tmp_path / "workspace", user=tmp_path / "user")
+    calls: list[list[str]] = []
+
+    monkeypatch.setattr(mcp_installer.shutil, "which", lambda _: "fake-agent")
+
+    def fake_run(command: list[str]) -> subprocess.CompletedProcess[str]:
+        calls.append(command)
+        return subprocess.CompletedProcess(command, 0, stdout="configured", stderr="")
+
+    monkeypatch.setattr(mcp_installer, "_run", fake_run)
+    result = mcp_installer.install(paths, "codex")
+    assert result["status"] == "already_configured"
+    assert ["codex", "mcp", "add", "resevo", "--", "resevo", "mcp", "serve"] not in calls
+    assert list((paths.user / "mcp-preflight").glob("*.json"))
 
 
 def test_cli_self_evolution_keeps_candidate_first(tmp_path: Path) -> None:

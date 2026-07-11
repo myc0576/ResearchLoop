@@ -19,6 +19,9 @@ from .services import (
     workspace_list,
     workspace_remove,
 )
+from .mcp_installer import install as install_mcp
+from .mcp_installer import status as mcp_status
+from .mcp_installer import uninstall as uninstall_mcp
 
 
 LEGACY_COMMANDS = {
@@ -135,10 +138,25 @@ def dispatch(command: str, args: list[str], paths) -> int:
     if command == "mcp":
         if args and args[0] == "--self-test":
             return run_legacy("mcp", ["--self-test", *args[1:]], paths)
+        print_only = "--print" in args
+        dry_run = "--dry-run" in args
+        args = [item for item in args if item not in {"--print", "--dry-run"}]
         parser = _subparser("Serve the local Resevo MCP")
-        parser.add_argument("action", choices=["serve", "self-test"])
+        parser.add_argument("action", choices=["serve", "self-test", "install", "status", "uninstall"])
+        parser.add_argument("agent", nargs="?")
         parser.add_argument("args", nargs=argparse.REMAINDER)
         ns = parser.parse_args(args)
+        if ns.action in {"install", "status", "uninstall"}:
+            if not ns.agent:
+                parser.error(f"mcp {ns.action} requires an agent")
+            if ns.action == "install":
+                result = install_mcp(paths, ns.agent, print_only=print_only, dry_run=dry_run)
+            elif ns.action == "status":
+                result = mcp_status(paths, ns.agent, print_only=print_only, dry_run=dry_run)
+            else:
+                result = uninstall_mcp(paths, ns.agent, print_only=print_only, dry_run=dry_run)
+            print_json(result)
+            return 0 if result.get("ok") else 1
         return run_legacy("mcp", (["--self-test"] if ns.action == "self-test" else ns.args), paths)
     if command == "migrate":
         parser = _subparser("Migrate ResearchLoop naming without rewriting history")

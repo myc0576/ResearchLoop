@@ -8,6 +8,8 @@ from pathlib import Path
 from typing import Any
 
 from fastmcp import FastMCP
+from resevo.core import Paths
+from resevo.services import run_legacy
 
 ROOT = Path(__file__).absolute().parents[1]
 SCRIPTS = ROOT / "scripts"
@@ -92,6 +94,24 @@ def _list_proposals_impl(status: str | None = None) -> dict[str, Any]:
     return {"proposal_count": len(proposals), "source": str(files[-1]), "proposals": proposals}
 
 
+def _list_candidates_impl() -> dict[str, Any]:
+    candidates: list[dict[str, Any]] = []
+    for name in ("knowledge", "prompts", "research_assets", "decisions", "workflow_improvement_backlog"):
+        path = REGISTRY_FILES.get(name)
+        if not path:
+            continue
+        data = read_yaml(path)
+        for item in data.get(name, []) if isinstance(data, dict) else []:
+            if str(item.get("status", "")).lower() in {"candidate", "pending validation"}:
+                candidates.append({"registry": name, **item})
+    return {"candidate_count": len(candidates), "candidates": candidates}
+
+
+def _run_legacy_service(name: str, args: list[str]) -> dict[str, Any]:
+    paths = Paths(engine=ENGINE_ROOT, workspace=ROOT, user=ROOT / ".resevo")
+    return {"ok": run_legacy(name, args, paths) == 0, "command": [name, *args]}
+
+
 def _record_feedback_impl(target_id: str, feedback_type: str, note: str = "") -> dict[str, Any]:
     if feedback_type not in FEEDBACK_TYPES:
         raise ValueError(f"feedback_type must be one of {sorted(FEEDBACK_TYPES)}")
@@ -120,6 +140,24 @@ def search_kb(query: str, limit: int = 10) -> dict[str, Any]:
 
 
 @mcp.tool()
+def search_knowledge(query: str, limit: int = 10) -> dict[str, Any]:
+    """Search reusable knowledge and prompts through the local index."""
+    result = _search_kb_impl(query, limit)
+    result["results"] = [item for item in result.get("results", []) if item.get("kind") in {"knowledge", "prompts"}]
+    result["result_count"] = len(result["results"])
+    return result
+
+
+@mcp.tool()
+def search_workflows(query: str, limit: int = 10) -> dict[str, Any] | None:
+    """Search workflow, decision, asset, and proposal records."""
+    result = _search_kb_impl(query, limit)
+    result["results"] = [item for item in result.get("results", []) if item.get("kind") in {"research_assets", "decisions", "workflow_improvement_backlog", "registry"}]
+    result["result_count"] = len(result["results"])
+    return result if result["results"] else {"ok": True, "query": query, "result_count": 0, "results": [], "reuse": None}
+
+
+@mcp.tool()
 def read_kb_doc(path: str) -> dict[str, Any]:
     """Read a whitelisted knowledge, prompt, harness design, registry, decision, or report document."""
     return _read_kb_doc_impl(path)
@@ -144,9 +182,37 @@ def list_proposals(status: str | None = None) -> dict[str, Any]:
 
 
 @mcp.tool()
+def list_candidates() -> dict[str, Any]:
+    """List candidate and pending-validation workflow records."""
+    return _list_candidates_impl()
+
+
+@mcp.tool()
 def record_feedback(target_id: str, feedback_type: str, note: str = "") -> dict[str, Any]:
     """Record feedback for a registry item. This is the MCP server's only write tool."""
     return _record_feedback_impl(target_id, feedback_type, note)
+
+
+@mcp.tool()
+def create_intake(project_root: str | None = None, trigger: str = "MCP intake", out: str | None = None) -> dict[str, Any]:
+    """Create a candidate-first self-evolution intake through the CLI service."""
+    target_root = Path(project_root or ROOT)
+    output = Path(out) if out else target_root / ".resevo" / "intake.yaml"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    result = _run_legacy_service("self-evolution", ["init", "--project-root", str(target_root), "--trigger", trigger, "--out", str(output)])
+    return {**result, "out": str(output)}
+
+
+@mcp.tool()
+def run_closeout() -> dict[str, Any]:
+    """Run the existing closeout service and return its status."""
+    return _run_legacy_service("closeout", [])
+
+
+@mcp.tool()
+def propose_workflow_change() -> dict[str, Any]:
+    """Create reviewable workflow proposals without applying or promoting them."""
+    return _run_legacy_service("evolve", ["scan"])
 
 
 def self_test() -> dict[str, Any]:
