@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from .core import Paths, read_yaml, resolve_paths, write_yaml_if_missing
+from .provenance import record_run
 
 
 LEGACY_SCRIPTS = {
@@ -159,3 +160,7 @@ def migration_plan(paths: Paths, apply: bool = False) -> dict[str, Any]:
     if apply:
         result["written"] = write_yaml_if_missing(paths.workspace_meta / "migration-researchloop.yaml", result)
     return result
+
+
+def record_provenance(paths: Paths, label: str, command: list[str], inputs: list[str], outputs: list[str]) -> dict[str, Any]:
+    return record_run(paths.workspace, label, command, inputs=inputs, outputs=outputs)

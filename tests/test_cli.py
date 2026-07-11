@@ -13,6 +13,7 @@ import resevo.mcp_installer as mcp_installer
 from resevo.core import Paths
 from resevo.retrieval import rank_results
 from resevo.evolution import evaluate_guard
+from resevo.provenance import record_run
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -252,6 +253,22 @@ def test_guarded_evolution_allows_experiment_only_after_gates(tmp_path: Path) ->
     assert result["apply_allowed"] is True
     assert result["promotion_required"] is True
     assert set(result["rollback"]) == {"performed", "champion_preserved", "reason"}
+
+
+def test_provenance_records_hashes_without_copying_inputs(tmp_path: Path) -> None:
+    source = tmp_path / "input.txt"
+    output = tmp_path / "output.txt"
+    source.write_text("private source", encoding="utf-8")
+    output.write_text("derived result", encoding="utf-8")
+    result = record_run(tmp_path, "hash-test", ["resevo", "status"], inputs=[source], outputs=[output])
+    run_dir = Path(result["run_dir"])
+    run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    manifest = json.loads((run_dir / "artifact_manifest.json").read_text(encoding="utf-8"))
+    assert run["input_hashes"][str(source)]
+    assert run["output_hashes"][str(output)]
+    assert "private source" not in (run_dir / "run.json").read_text(encoding="utf-8")
+    assert len(manifest["artifacts"]) == 2
+    assert (run_dir / "trace.jsonl").read_text(encoding="utf-8").count("run_recorded") == 1
 
 
 def test_cli_self_evolution_keeps_candidate_first(tmp_path: Path) -> None:

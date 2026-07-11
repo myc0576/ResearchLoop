@@ -18,6 +18,7 @@ from .services import (
     workspace_add,
     workspace_list,
     workspace_remove,
+    record_provenance,
 )
 from .mcp_installer import install as install_mcp
 from .mcp_installer import status as mcp_status
@@ -56,7 +57,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--engine-root", default=os.environ.get("RESEVO_ENGINE_ROOT"))
     parser.add_argument(
         "command",
-        choices=sorted({"init", "doctor", "status", "workspace", "recall", "intake", "closeout", "evaluate", "evolve", "mcp", "migrate", *LEGACY_COMMANDS}),
+        choices=sorted({"init", "doctor", "status", "workspace", "recall", "intake", "closeout", "evaluate", "evolve", "mcp", "migrate", "provenance", *LEGACY_COMMANDS}),
     )
     parser.add_argument("args", nargs=argparse.REMAINDER)
     return parser
@@ -122,7 +123,16 @@ def dispatch(command: str, args: list[str], paths) -> int:
         ns = parser.parse_args(args)
         return run_legacy("self-evolution", ["init", "--project-root", ns.project_root, "--trigger", ns.trigger, "--out", ns.out], paths)
     if command == "closeout":
-        return run_legacy("closeout", args, paths)
+        result = run_legacy("closeout", args, paths)
+        if result == 0:
+            record_provenance(
+                paths,
+                "closeout",
+                ["resevo", "closeout"],
+                inputs=[],
+                outputs=[str(paths.workspace / "state" / "closeout_health.json")],
+            )
+        return result
     if command == "evaluate":
         return run_legacy("evaluate", args or ["evaluate", "--target", "all", "--json"], paths)
     if command == "evolve":
@@ -182,6 +192,15 @@ def dispatch(command: str, args: list[str], paths) -> int:
         parser.add_argument("--apply", action="store_true")
         ns = parser.parse_args(args)
         print_json(migration_plan(paths, ns.apply))
+        return 0
+    if command == "provenance":
+        parser = _subparser("Record append-only run provenance")
+        parser.add_argument("--label", default="resevo-run")
+        parser.add_argument("--command", action="append", default=[])
+        parser.add_argument("--input", action="append", default=[])
+        parser.add_argument("--output", action="append", default=[])
+        ns = parser.parse_args(args)
+        print_json(record_provenance(paths, ns.label, ns.command, ns.input, ns.output))
         return 0
     if command in LEGACY_COMMANDS:
         aliases = {
