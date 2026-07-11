@@ -2,7 +2,25 @@
 
 **把每一次科研任务，沉淀成下一篇论文可以复用的工作流。**
 
+![Resevo 产品概览](assets/readme/resevo-overview.svg)
+
+![Resevo 技术架构](assets/readme/resevo-technical-architecture.svg)
+
 [English README](README.md)
+
+## 五分钟本地闭环
+
+```bash
+git clone https://github.com/myc0576/Resevo.git
+cd Resevo
+python -m pip install -e .
+mkdir my-research && cd my-research
+resevo init
+resevo demo
+resevo doctor
+resevo mcp install codex --dry-run
+# 或：resevo mcp install claude --dry-run
+```
 
 正式入口是 `resevo`。历史 `researchloop` 命令和
 `mcp/research_harness_mcp.py` 文件名暂时保留为 deprecated 兼容层。

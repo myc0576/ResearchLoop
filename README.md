@@ -4,7 +4,25 @@
 
 ![Resevo overview architecture](assets/readme/resevo-overview.svg)
 
+![Resevo technical architecture](assets/readme/resevo-technical-architecture.svg)
+
 [中文 README](README.zh-CN.md)
+
+## Five-minute local loop
+
+```bash
+git clone https://github.com/myc0576/Resevo.git
+cd Resevo
+python -m pip install -e .
+mkdir my-research && cd my-research
+resevo init
+resevo demo
+resevo doctor
+resevo mcp install codex --dry-run
+# or: resevo mcp install claude --dry-run
+```
+
+Use `--json` on product commands for machine-readable output.
 
 > **Resevo does not do research for you. It makes your research workflow improve with use.**
 
