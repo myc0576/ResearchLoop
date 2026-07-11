@@ -128,6 +128,32 @@ def test_product_cli_initializes_portable_workspace(tmp_path: Path) -> None:
     assert json.loads(doctor.stdout)["product"] == "Resevo"
 
 
+def test_fresh_workspace_completes_local_demo(tmp_path: Path) -> None:
+    instance = tmp_path / "fresh-workspace"
+    instance.mkdir()
+    init = run_cli(instance, "init", "--json")
+    assert init.returncode == 0, init.stderr + init.stdout
+    for relative in (
+        "harness.yaml",
+        "registry/knowledge.yaml",
+        "registry/prompts.yaml",
+        "registry/research_assets.yaml",
+        "registry/decisions.yaml",
+        "registry/feedback.yaml",
+        "knowledge/README.md",
+        "prompts/README.md",
+    ):
+        assert (instance / relative).exists(), relative
+    demo = run_cli(instance, "demo", "--json")
+    assert demo.returncode == 0, demo.stderr + demo.stdout
+    payload = json.loads(demo.stdout)
+    assert payload["ok"] is True
+    assert payload["candidate_status"] == "pending validation"
+    assert Path(payload["run_dir"], "run.json").exists()
+    doctor = run_cli(instance, "doctor", "--json")
+    assert doctor.returncode == 0, doctor.stderr + doctor.stdout
+
+
 def test_workspace_remove_does_not_delete_workspace_data(tmp_path: Path) -> None:
     instance = tmp_path / "instance"
     seed_instance(instance)
@@ -150,6 +176,10 @@ def test_mcp_install_print_is_side_effect_free(tmp_path: Path) -> None:
     payload = json.loads(result.stdout)
     assert payload["status"] == "dry_run"
     assert payload["changed"] is False
+    assert "--workspace-root" in payload["command"]
+    assert str(instance.resolve()) in payload["command"]
+    assert "--engine-root" in payload["command"]
+    assert str(REPO_ROOT.resolve()) in payload["command"]
     assert not (tmp_path / "resevo-user").exists()
 
 

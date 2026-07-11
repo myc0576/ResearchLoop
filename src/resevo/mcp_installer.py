@@ -18,11 +18,14 @@ MCP_DISPLAY_NAME = "Resevo"
 SUPPORTED_AGENTS = {"codex", "claude"}
 
 
-def command_for(agent: str, action: str) -> list[str]:
+def command_for(agent: str, action: str, paths: Paths | None = None) -> list[str]:
     if agent not in SUPPORTED_AGENTS:
         raise ValueError(f"unsupported agent: {agent}")
     if action == "add":
-        return [agent, "mcp", "add", MCP_SERVER_NAME, "--", "resevo", "mcp", "serve"]
+        command = [agent, "mcp", "add", MCP_SERVER_NAME, "--", "resevo"]
+        if paths is not None:
+            command.extend(["--workspace-root", str(paths.workspace), "--engine-root", str(paths.engine)])
+        return [*command, "mcp", "serve"]
     if action == "get":
         return [agent, "mcp", "get", MCP_SERVER_NAME]
     if action == "remove":
@@ -30,8 +33,8 @@ def command_for(agent: str, action: str) -> list[str]:
     raise ValueError(action)
 
 
-def snippet(agent: str) -> str:
-    command = command_for(agent, "add") if agent in SUPPORTED_AGENTS else [agent, "mcp", "add", MCP_SERVER_NAME, "--", "resevo", "mcp", "serve"]
+def snippet(agent: str, paths: Paths | None = None) -> str:
+    command = command_for(agent, "add", paths) if agent in SUPPORTED_AGENTS else [agent, "mcp", "add", MCP_SERVER_NAME, "--", "resevo", "mcp", "serve"]
     return " ".join(command)
 
 
@@ -43,7 +46,7 @@ def _record_preflight(paths: Paths, agent: str, action: str, completed: subproce
         "created_at": datetime.now(timezone.utc).isoformat(),
         "agent": agent,
         "action": action,
-        "command": snippet(agent),
+        "command": snippet(agent, paths),
         "returncode": completed.returncode if completed else None,
         "output_sha256": hashlib.sha256(output.encode("utf-8", errors="replace")).hexdigest(),
         "output_length": len(output),
@@ -67,7 +70,7 @@ def _run(command: list[str]) -> subprocess.CompletedProcess[str] | None:
 def install(paths: Paths, agent: str, *, print_only: bool = False, dry_run: bool = False) -> dict[str, Any]:
     if agent not in SUPPORTED_AGENTS:
         return {"ok": print_only or dry_run, "agent": agent, "status": "unsupported_agent", "snippet": snippet(agent), "changed": False}
-    command = command_for(agent, "add")
+    command = command_for(agent, "add", paths)
     if print_only or dry_run:
         return {"ok": True, "agent": agent, "status": "dry_run", "command": command, "snippet": " ".join(command), "changed": False}
     if not shutil.which(agent):

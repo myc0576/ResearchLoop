@@ -8,6 +8,10 @@ import os
 import sys
 from pathlib import Path
 
+import typer
+from rich.console import Console
+from rich.table import Table
+
 from .core import resolve_paths
 from .services import (
     doctor,
@@ -19,6 +23,7 @@ from .services import (
     workspace_list,
     workspace_remove,
     record_provenance,
+    run_demo,
 )
 from .mcp_installer import install as install_mcp
 from .mcp_installer import status as mcp_status
@@ -43,9 +48,68 @@ LEGACY_COMMANDS = {
     "war-room",
 }
 
+app = typer.Typer(
+    name="resevo",
+    help="Evidence-Governed Self-Evolving Research Workflow Harness.",
+    rich_markup_mode="markdown",
+    no_args_is_help=True,
+)
+console = Console()
+
+
+@app.callback()
+def product_context(
+    ctx: typer.Context,
+    workspace_root: Path | None = typer.Option(None, "--workspace-root", "--root"),
+    engine_root: Path | None = typer.Option(None, "--engine-root"),
+) -> None:
+    """Configure the workspace used by all Resevo product commands."""
+    ctx.obj = resolve_paths(workspace_root, engine_root)
+
+
+@app.command("init")
+def init_command(ctx: typer.Context, json_output: bool = typer.Option(False, "--json")) -> None:
+    """Create a complete, runnable Resevo workspace."""
+    print_result(init_workspace(ctx.obj), json_output)
+
+
+@app.command("demo")
+def demo_command(ctx: typer.Context, json_output: bool = typer.Option(False, "--json")) -> None:
+    """Run a deterministic candidate-first local loop."""
+    print_result(run_demo(ctx.obj), json_output)
+
+
+@app.command("doctor")
+def doctor_command(ctx: typer.Context, json_output: bool = typer.Option(False, "--json")) -> None:
+    """Check the installation and current workspace."""
+    result = doctor(ctx.obj)
+    print_result(result, json_output)
+    if not result["ok"]:
+        raise typer.Exit(1)
+
+
+@app.command("status")
+def status_command(ctx: typer.Context, json_output: bool = typer.Option(False, "--json")) -> None:
+    """Show current workspace state."""
+    print_result(status(ctx.obj), json_output)
+
 
 def print_json(data: object) -> None:
     print(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True))
+
+
+def print_result(data: dict[str, object], as_json: bool) -> None:
+    if as_json:
+        print_json(data)
+        return
+    table = Table(show_header=False, box=None)
+    table.add_column(style="bold cyan")
+    table.add_column()
+    for key, value in data.items():
+        if isinstance(value, (dict, list)):
+            value = json.dumps(value, ensure_ascii=False)
+        table.add_row(key.replace("_", " "), str(value))
+    console.print(table)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -57,7 +121,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--engine-root", default=os.environ.get("RESEVO_ENGINE_ROOT"))
     parser.add_argument(
         "command",
-        choices=sorted({"init", "doctor", "status", "workspace", "recall", "intake", "closeout", "evaluate", "evolve", "mcp", "migrate", "provenance", *LEGACY_COMMANDS}),
+        choices=sorted({"init", "demo", "doctor", "status", "workspace", "recall", "intake", "closeout", "evaluate", "evolve", "mcp", "migrate", "provenance", *LEGACY_COMMANDS}),
     )
     parser.add_argument("args", nargs=argparse.REMAINDER)
     return parser
@@ -73,20 +137,27 @@ def dispatch(command: str, args: list[str], paths) -> int:
         parser.add_argument("--json", action="store_true")
         ns = parser.parse_args(args)
         result = init_workspace(paths)
-        print_json(result)
+        print_result(result, ns.json)
+        return 0
+    if command == "demo":
+        parser = _subparser("Run a deterministic local Resevo loop")
+        parser.add_argument("--json", action="store_true")
+        ns = parser.parse_args(args)
+        result = run_demo(paths)
+        print_result(result, ns.json)
         return 0
     if command == "doctor":
         parser = _subparser("Check Resevo installation and workspace")
         parser.add_argument("--json", action="store_true")
-        parser.parse_args(args)
+        ns = parser.parse_args(args)
         result = doctor(paths)
-        print_json(result)
+        print_result(result, ns.json)
         return 0 if result["ok"] else 1
     if command == "status":
         parser = _subparser("Show Resevo installation and workspace status")
         parser.add_argument("--json", action="store_true")
-        parser.parse_args(args)
-        print_json(status(paths))
+        ns = parser.parse_args(args)
+        print_result(status(paths), ns.json)
         return 0
     if command == "workspace":
         parser = _subparser("Manage registered Resevo workspaces")
@@ -217,6 +288,26 @@ def dispatch(command: str, args: list[str], paths) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    actual = list(sys.argv[1:] if argv is None else argv)
+    product_commands = {"init", "demo", "doctor", "status"}
+    command_token = None
+    skip_value = False
+    for token in actual:
+        if skip_value:
+            skip_value = False
+            continue
+        if token in {"--workspace-root", "--root", "--engine-root"}:
+            skip_value = True
+            continue
+        if not token.startswith("-"):
+            command_token = token
+            break
+    if command_token in product_commands or actual in (["--help"], ["-h"]):
+        try:
+            app(args=actual, standalone_mode=False)
+            return 0
+        except typer.Exit as exc:
+            return int(exc.exit_code)
     parser = build_parser()
     ns = parser.parse_args(argv)
     paths = resolve_paths(ns.workspace_root, ns.engine_root)

@@ -62,7 +62,7 @@ def resolve_paths(workspace: str | Path | None = None, engine: str | Path | None
     )
 
 
-def read_yaml(path: Path, default: Any) -> Any:
+def read_yaml(path: Path, default: Any = None) -> Any:
     if not path.exists():
         return default
     data = yaml.safe_load(path.read_text(encoding="utf-8"))

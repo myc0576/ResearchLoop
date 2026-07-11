@@ -1,0 +1,11 @@
+version: 1
+product: Resevo
+paths:
+  knowledge_root: knowledge
+  prompts_root: prompts
+  registry_root: registry
+  state_root: state
+  runs_root: runs
+promotion:
+  automatic_max_status: pending validation
+  human_gate_required: true

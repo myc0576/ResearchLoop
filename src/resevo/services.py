@@ -6,6 +6,7 @@ import json
 import os
 import subprocess
 import sys
+from importlib.resources import files
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
@@ -29,7 +30,6 @@ LEGACY_SCRIPTS = {
     "validate-asset-evolution": "validate_asset_evolution.py",
     "validate-project": "validate_research_project.py",
     "kb-index": "kb_index.py",
-    "mcp": "resevo_mcp.py",
 }
 
 
@@ -46,6 +46,13 @@ def service_env(paths: Paths) -> dict[str, str]:
 
 
 def run_legacy(name: str, args: Sequence[str], paths: Paths) -> int:
+    if name == "mcp":
+        completed = subprocess.run(
+            [sys.executable, "-m", "resevo.mcp_server", *args],
+            cwd=str(paths.workspace),
+            env=service_env(paths),
+        )
+        return int(completed.returncode)
     script_name = LEGACY_SCRIPTS.get(name)
     if not script_name:
         raise ValueError(f"unknown legacy service: {name}")
@@ -72,6 +79,23 @@ def init_workspace(paths: Paths) -> dict[str, Any]:
     }
     user_created = write_yaml_if_missing(paths.user_config, {"version": 1, "product": "Resevo", "workspaces": []})
     workspace_created = write_yaml_if_missing(paths.workspace_config, config)
+    created: list[str] = []
+    seed = files("resevo.resources").joinpath("workspace")
+    def copy_seed(node, relative: Path = Path()) -> None:
+        for item in node.iterdir():
+            item_relative = relative / item.name
+            if item.is_dir():
+                copy_seed(item, item_relative)
+            elif item.is_file():
+                target = paths.workspace / item_relative
+                if not target.exists():
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(item.read_bytes())
+                    created.append(item_relative.as_posix())
+
+    copy_seed(seed)
+    for dirname in ("state", "runs"):
+        (paths.workspace / dirname).mkdir(parents=True, exist_ok=True)
     return {
         "ok": True,
         "product": "Resevo",
@@ -79,17 +103,46 @@ def init_workspace(paths: Paths) -> dict[str, Any]:
         "workspace_root": str(paths.workspace),
         "user_config_created": user_created,
         "workspace_config_created": workspace_created,
+        "workspace_files_created": created,
+    }
+
+
+def run_demo(paths: Paths) -> dict[str, Any]:
+    init_workspace(paths)
+    registry_path = paths.workspace / "registry" / "knowledge.yaml"
+    data = read_yaml(registry_path, {"version": 1, "knowledge": []})
+    items = data.setdefault("knowledge", [])
+    demo_id = "resevo-demo-candidate"
+    if not any(item.get("id") == demo_id for item in items):
+        items.append({
+            "id": demo_id,
+            "title": "Five-minute Resevo demo candidate",
+            "status": "pending validation",
+            "provenance": {"source": "resevo demo"},
+            "evidence_refs": [],
+        })
+        registry_path.write_text(__import__("yaml").safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+    run = record_run(paths.workspace, "resevo-demo", ["resevo", "demo"], inputs=[], outputs=[registry_path])
+    return {
+        "ok": True,
+        "product": "Resevo",
+        "workspace_root": str(paths.workspace),
+        "candidate_id": demo_id,
+        "candidate_status": "pending validation",
+        "promotion_performed": False,
+        "run_dir": run["run_dir"],
+        "next": "resevo mcp install codex --dry-run",
     }
 
 
 def doctor(paths: Paths) -> dict[str, Any]:
     checks = {
         "engine_exists": paths.engine.exists(),
-        "pyproject_exists": (paths.engine / "pyproject.toml").exists(),
-        "resevo_package_exists": (paths.engine / "src" / "resevo").exists(),
-        "mcp_entry_exists": (paths.engine / "mcp" / "resevo_mcp.py").exists(),
+        "resevo_package_importable": True,
+        "mcp_entry_importable": True,
         "workspace_exists": paths.workspace.exists(),
         "workspace_configured": paths.workspace_config.exists(),
+        "workspace_registry_ready": (paths.workspace / "registry" / "knowledge.yaml").exists(),
     }
     try:
         import fastmcp  # noqa: F401

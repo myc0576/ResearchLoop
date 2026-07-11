@@ -12,6 +12,8 @@ authors = [{ name = "Resevo maintainers" }]
 dependencies = [
   "PyYAML>=6.0",
   "fastmcp>=2.0",
+  "typer>=0.12",
+  "rich>=13.7",
 ]
 
 [project.scripts]
@@ -20,3 +22,6 @@ researchloop = "resevo.compat:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+resevo = ["resources/workspace/**/*"]
