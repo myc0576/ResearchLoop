@@ -1,7 +1,7 @@
 ﻿{
   "mcpServers": {
-    "Resevo": {
-      "command": "resevo",
+    "MycEvo": {
+      "command": "mycevo",
       "args": ["mcp", "serve"],
       "disabled": false,
       "autoApprove": [

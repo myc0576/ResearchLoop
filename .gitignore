@@ -30,7 +30,8 @@ external/
 *.local
 *.local.*
 
-# ResearchLoop generated local state and traces
+# MycEvo generated local state and traces
+.mycevo/
 .resevo/
 runs/
 state/
