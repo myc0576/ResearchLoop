@@ -9,13 +9,12 @@ from pathlib import Path
 from typing import Any
 
 from fastmcp import FastMCP
-from .core import Paths
-from .retrieval import rank_results
-from .services import run_legacy
-from .core import read_yaml
+from ..core import Paths, read_yaml
+from ..retrieval import rank_results
+from ..services import run_legacy
 
-ENGINE_ROOT = Path(os.environ.get("RESEVO_ENGINE_ROOT") or os.environ.get("RESEARCHLOOP_ENGINE_ROOT") or Path(__file__).absolute().parents[1]).resolve()
-ROOT = Path(os.environ.get("RESEVO_ROOT") or os.environ.get("RESEVO_WORKSPACE_ROOT") or ENGINE_ROOT).resolve()
+ENGINE_ROOT = Path(os.environ.get("MYCEVO_ENGINE_ROOT") or os.environ.get("RESEVO_ENGINE_ROOT") or os.environ.get("RESEARCHLOOP_ENGINE_ROOT") or Path(__file__).absolute().parents[2]).resolve()
+ROOT = Path(os.environ.get("MYCEVO_ROOT") or os.environ.get("MYCEVO_WORKSPACE_ROOT") or os.environ.get("RESEVO_ROOT") or os.environ.get("RESEVO_WORKSPACE_ROOT") or ENGINE_ROOT).resolve()
 STATE_DIR = ROOT / "state"
 REUSABLE_KNOWLEDGE_ROOT = ROOT / "knowledge"
 REUSABLE_PROMPTS_ROOT = ROOT / "prompts"
@@ -65,7 +64,7 @@ def _local_search(query: str, limit: int) -> dict[str, Any]:
     return {"ok": True, "query": query, "result_count": len(results[:limit]), "results": results[:limit]}
 
 
-mcp = FastMCP("Resevo")
+mcp = FastMCP("MycEvo")
 
 ALLOWED_READ_ROOTS = [
     REUSABLE_KNOWLEDGE_ROOT,
@@ -148,7 +147,7 @@ def _list_candidates_impl() -> dict[str, Any]:
 
 
 def _run_legacy_service(name: str, args: list[str]) -> dict[str, Any]:
-    paths = Paths(engine=ENGINE_ROOT, workspace=ROOT, user=ROOT / ".resevo")
+    paths = Paths(engine=ENGINE_ROOT, workspace=ROOT, user=ROOT / ".mycevo")
     return {"ok": run_legacy(name, args, paths) == 0, "command": [name, *args]}
 
 
@@ -165,7 +164,7 @@ def _record_feedback_impl(target_id: str, feedback_type: str, note: str = "") ->
         "feedback_type": feedback_type,
         "note": note,
         "created_at": now_iso(),
-        "source": "resevo_mcp",
+        "source": "mycevo_mcp",
     }
     data["feedback"].append(item)
     write_yaml(path, data)
@@ -263,7 +262,7 @@ def record_feedback(target_id: str, feedback_type: str, note: str = "") -> dict[
 def create_intake(project_root: str | None = None, trigger: str = "MCP intake", out: str | None = None) -> dict[str, Any]:
     """Create a candidate-first self-evolution intake through the CLI service."""
     target_root = Path(project_root or ROOT)
-    output = Path(out) if out else target_root / ".resevo" / "intake.yaml"
+    output = Path(out) if out else target_root / ".mycevo" / "intake.yaml"
     output.parent.mkdir(parents=True, exist_ok=True)
     result = _run_legacy_service("self-evolution", ["init", "--project-root", str(target_root), "--trigger", trigger, "--out", str(output)])
     return {**result, "out": str(output)}
@@ -302,7 +301,7 @@ def print_json(data: dict[str, Any]) -> None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Resevo MCP stdio server")
+    parser = argparse.ArgumentParser(description="MycEvo MCP stdio server")
     parser.add_argument("--self-test", action="store_true")
     args = parser.parse_args()
     if args.self_test:

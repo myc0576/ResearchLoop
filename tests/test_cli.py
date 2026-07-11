@@ -9,11 +9,11 @@ from pathlib import Path
 
 import pytest
 import yaml
-import resevo.mcp_installer as mcp_installer
-from resevo.core import Paths
-from resevo.retrieval import rank_results
-from resevo.evolution import evaluate_guard
-from resevo.provenance import record_run
+import mycevo.mcp_installer as mcp_installer
+from mycevo.core import Paths
+from mycevo.retrieval import rank_results
+from mycevo.evolution import evaluate_guard
+from mycevo.provenance import record_run
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -86,12 +86,12 @@ def seed_instance(root: Path) -> Path:
 def run_cli(instance: Path, *args: str) -> subprocess.CompletedProcess[str]:
     env = os.environ.copy()
     env["PYTHONPATH"] = str(REPO_ROOT / "src") + os.pathsep + env.get("PYTHONPATH", "")
-    env["RESEVO_USER_ROOT"] = str(instance.parent / "resevo-user")
+    env["MYCEVO_USER_ROOT"] = str(instance.parent / "mycevo-user")
     return subprocess.run(
         [
             sys.executable,
             "-m",
-            "resevo.cli",
+            "mycevo.cli",
             "--engine-root",
             str(REPO_ROOT),
             "--root",
@@ -124,8 +124,8 @@ def test_product_cli_initializes_portable_workspace(tmp_path: Path) -> None:
     assert doctor.returncode == 0, doctor.stderr + doctor.stdout
     status = run_cli(instance, "status", "--json")
     assert status.returncode == 0, status.stderr + status.stdout
-    assert (instance / ".resevo" / "config.yaml").exists()
-    assert json.loads(doctor.stdout)["product"] == "Resevo"
+    assert (instance / ".mycevo" / "config.yaml").exists()
+    assert json.loads(doctor.stdout)["product"] == "MycEvo"
 
 
 def test_fresh_workspace_completes_local_demo(tmp_path: Path) -> None:
@@ -180,7 +180,7 @@ def test_mcp_install_print_is_side_effect_free(tmp_path: Path) -> None:
     assert str(instance.resolve()) in payload["command"]
     assert "--engine-root" in payload["command"]
     assert str(REPO_ROOT.resolve()) in payload["command"]
-    assert not (tmp_path / "resevo-user").exists()
+    assert not (tmp_path / "mycevo-user").exists()
 
 
 def test_unknown_mcp_agent_prints_snippet_without_editing(tmp_path: Path) -> None:
@@ -206,7 +206,7 @@ def test_mcp_install_is_idempotent_when_official_get_succeeds(tmp_path: Path, mo
     monkeypatch.setattr(mcp_installer, "_run", fake_run)
     result = mcp_installer.install(paths, "codex")
     assert result["status"] == "already_configured"
-    assert ["codex", "mcp", "add", "resevo", "--", "resevo", "mcp", "serve"] not in calls
+    assert ["codex", "mcp", "add", "mycevo", "--", "mycevo", "mcp", "serve"] not in calls
     assert list((paths.user / "mcp-preflight").glob("*.json"))
 
 
@@ -290,7 +290,7 @@ def test_provenance_records_hashes_without_copying_inputs(tmp_path: Path) -> Non
     output = tmp_path / "output.txt"
     source.write_text("private source", encoding="utf-8")
     output.write_text("derived result", encoding="utf-8")
-    result = record_run(tmp_path, "hash-test", ["resevo", "status"], inputs=[source], outputs=[output])
+    result = record_run(tmp_path, "hash-test", ["mycevo", "status"], inputs=[source], outputs=[output])
     run_dir = Path(result["run_dir"])
     run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
     manifest = json.loads((run_dir / "artifact_manifest.json").read_text(encoding="utf-8"))
@@ -306,12 +306,12 @@ def test_mcp_resolves_engine_and_workspace_separately(tmp_path: Path) -> None:
     workspace.mkdir()
     env = os.environ.copy()
     env["PYTHONPATH"] = str(REPO_ROOT / "src")
-    env["RESEVO_ENGINE_ROOT"] = str(REPO_ROOT)
-    env["RESEVO_ROOT"] = str(workspace)
+    env["MYCEVO_ENGINE_ROOT"] = str(REPO_ROOT)
+    env["MYCEVO_ROOT"] = str(workspace)
     code = (
         "import importlib.util; from pathlib import Path; "
-        "spec=importlib.util.spec_from_file_location('resevo_mcp_check', r'"
-        + str(REPO_ROOT / "mcp" / "resevo_mcp.py")
+        "spec=importlib.util.spec_from_file_location('mycevo_mcp_check', r'"
+        + str(REPO_ROOT / "mcp" / "mycevo_mcp.py")
         + "'); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod); "
         "assert mod.ENGINE_ROOT == Path(r'"
         + str(REPO_ROOT)
@@ -372,11 +372,11 @@ def test_cli_mcp_self_test_starts(tmp_path: Path) -> None:
     assert payload["ok"] is True
 
 
-def test_legacy_researchloop_import_points_to_resevo() -> None:
+def test_legacy_researchloop_import_points_to_mycevo() -> None:
     env = os.environ.copy()
     env["PYTHONPATH"] = str(REPO_ROOT / "src") + os.pathsep + env.get("PYTHONPATH", "")
     result = subprocess.run(
-        [sys.executable, "-c", "import researchloop, resevo; assert researchloop.__version__ == resevo.__version__"],
+        [sys.executable, "-c", "import researchloop, mycevo; assert researchloop.__version__ == mycevo.__version__"],
         cwd=str(REPO_ROOT),
         env=env,
         capture_output=True,
@@ -384,3 +384,35 @@ def test_legacy_researchloop_import_points_to_resevo() -> None:
         timeout=30,
     )
     assert result.returncode == 0, result.stderr + result.stdout
+
+
+def test_legacy_resevo_import_points_to_mycevo() -> None:
+    import mycevo
+    import resevo
+
+    assert resevo.__version__ == mycevo.__version__
+
+
+def test_mcp_command_injects_mycevo_roots(tmp_path: Path) -> None:
+    paths = Paths(engine=tmp_path / "engine", workspace=tmp_path / "workspace", user=tmp_path / "user")
+    for agent, flag in (("codex", "--env"), ("claude", "-e")):
+        command = mcp_installer.command_for(agent, "add", paths)
+        assert flag in command
+        assert f"MYCEVO_ENGINE_ROOT={paths.engine}" in command
+        assert f"MYCEVO_ROOT={paths.workspace}" in command
+        assert command[-2:] == ["mcp", "serve"]
+
+
+def test_migrate_resevo_previews_then_backs_up_without_deleting(tmp_path: Path) -> None:
+    instance = tmp_path / "workspace"
+    legacy = instance / ".resevo"
+    legacy.mkdir(parents=True)
+    (legacy / "config.yaml").write_text("product: Resevo\n", encoding="utf-8")
+    preview = run_cli(instance, "migrate", "resevo")
+    assert preview.returncode == 0, preview.stderr + preview.stdout
+    assert legacy.exists()
+    applied = run_cli(instance, "migrate", "resevo", "--apply")
+    assert applied.returncode == 0, applied.stderr + applied.stdout
+    assert legacy.exists()
+    assert (instance / ".mycevo" / "config.yaml").exists()
+    assert (instance / ".mycevo-migration-backup" / "resevo" / "config.yaml").exists()

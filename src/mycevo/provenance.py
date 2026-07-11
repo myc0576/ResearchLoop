@@ -43,7 +43,7 @@ def record_run(
 ) -> dict[str, Any]:
     """Write a run and its hashes without copying any artifact contents."""
     run_id = run_id or f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
-    run_dir = workspace / ".resevo" / "runs" / run_id
+    run_dir = workspace / ".mycevo" / "runs" / run_id
     input_paths = [Path(item).expanduser() for item in inputs]
     output_paths = [Path(item).expanduser() for item in outputs]
     artifacts = [
@@ -53,7 +53,7 @@ def record_run(
     ]
     created_at = _now()
     run = {
-        "schema": "resevo.run.v1",
+        "schema": "mycevo.run.v1",
         "run_id": run_id,
         "label": label,
         "created_at": created_at,
@@ -63,9 +63,9 @@ def record_run(
         "input_hashes": {str(path): _hash(path) for path in input_paths},
         "output_hashes": {str(path): _hash(path) for path in output_paths},
     }
-    manifest = {"schema": "resevo.artifact_manifest.v1", "run_id": run_id, "artifacts": artifacts}
+    manifest = {"schema": "mycevo.artifact_manifest.v1", "run_id": run_id, "artifacts": artifacts}
     decision_record = {
-        "schema": "resevo.decision_record.v1",
+        "schema": "mycevo.decision_record.v1",
         "run_id": run_id,
         "decision": decision or {"status": "recorded", "human_promotion_required": True},
         "created_at": created_at,
@@ -83,7 +83,7 @@ def record_run(
         f"- run_id: `{run_id}`",
         f"- command: `{list(command)}`",
         f"- workspace: `{workspace}`",
-        "- Inputs and outputs are referenced by path and SHA-256; contents are not copied into Resevo.",
+        "- Inputs and outputs are referenced by path and SHA-256; contents are not copied into MycEvo.",
         "- Re-run the command after verifying the referenced paths and the human decision gate.",
         "",
     ]

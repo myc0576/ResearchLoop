@@ -1,6 +1,6 @@
 """Deprecated compatibility import for the old ResearchLoop CLI."""
 
-from resevo.compat import main
+from mycevo.compat import researchloop_main as main
 
 __all__ = ["main"]
 

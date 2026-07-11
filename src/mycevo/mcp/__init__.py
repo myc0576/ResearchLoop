@@ -1,0 +1,1 @@
+"""MycEvo stdio MCP package."""

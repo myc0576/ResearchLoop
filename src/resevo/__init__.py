@@ -1,5 +1,5 @@
-"""Resevo public package entrypoints."""
+"""Deprecated import package; use :mod:`mycevo`."""
 
-__version__ = "0.1.0"
-__brand__ = "Resevo"
-__positioning__ = "Evidence-Governed Self-Evolving Research Workflow Harness"
+from mycevo import __brand__, __positioning__, __version__
+
+__all__ = ["__brand__", "__positioning__", "__version__"]

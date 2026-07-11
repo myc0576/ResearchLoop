@@ -1,4 +1,4 @@
-"""Portable Resevo paths and configuration primitives."""
+"""Portable MycEvo paths and configuration primitives."""
 
 from __future__ import annotations
 
@@ -20,15 +20,17 @@ def _path_from_env(*names: str) -> Path | None:
 
 
 def engine_root() -> Path:
-    return _path_from_env("RESEVO_ENGINE_ROOT", "RESEARCHLOOP_ENGINE_ROOT", "RESEARCHLOOP_PUBLIC_ROOT") or Path(__file__).resolve().parents[2]
+    return _path_from_env("MYCEVO_ENGINE_ROOT", "RESEVO_ENGINE_ROOT", "RESEARCHLOOP_ENGINE_ROOT", "RESEARCHLOOP_PUBLIC_ROOT") or Path(__file__).resolve().parents[2]
 
 
 def default_workspace_root() -> Path:
-    return _path_from_env("RESEVO_WORKSPACE_ROOT", "RESEVO_ROOT", "RESEARCHLOOP_ROOT") or Path.cwd().resolve()
+    return _path_from_env("MYCEVO_WORKSPACE_ROOT", "MYCEVO_ROOT", "RESEVO_WORKSPACE_ROOT", "RESEVO_ROOT", "RESEARCHLOOP_ROOT") or Path.cwd().resolve()
 
 
 def user_root() -> Path:
-    return _path_from_env("RESEVO_USER_ROOT") or (Path.home() / ".resevo").resolve()
+    return _path_from_env("MYCEVO_USER_ROOT", "RESEVO_USER_ROOT") or (Path.home() / ".mycevo").resolve()
+
+    
 
 
 @dataclass(frozen=True)
@@ -39,11 +41,15 @@ class Paths:
 
     @property
     def workspace_meta(self) -> Path:
-        return self.workspace / ".resevo"
+        return self.workspace / ".mycevo"
 
     @property
     def workspace_config(self) -> Path:
         return self.workspace_meta / "config.yaml"
+
+    @property
+    def legacy_workspace_meta(self) -> Path:
+        return self.workspace / ".resevo"
 
     @property
     def user_config(self) -> Path:

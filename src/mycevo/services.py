@@ -6,6 +6,7 @@ import json
 import os
 import subprocess
 import sys
+import shutil
 from importlib.resources import files
 from datetime import datetime, timezone
 from pathlib import Path
@@ -35,6 +36,9 @@ LEGACY_SCRIPTS = {
 
 def service_env(paths: Paths) -> dict[str, str]:
     env = os.environ.copy()
+    env["MYCEVO_ENGINE_ROOT"] = str(paths.engine)
+    env["MYCEVO_ROOT"] = str(paths.workspace)
+    env["MYCEVO_WORKSPACE_ROOT"] = str(paths.workspace)
     env["RESEVO_ENGINE_ROOT"] = str(paths.engine)
     env["RESEVO_ROOT"] = str(paths.workspace)
     env["RESEVO_WORKSPACE_ROOT"] = str(paths.workspace)
@@ -48,7 +52,7 @@ def service_env(paths: Paths) -> dict[str, str]:
 def run_legacy(name: str, args: Sequence[str], paths: Paths) -> int:
     if name == "mcp":
         completed = subprocess.run(
-            [sys.executable, "-m", "resevo.mcp_server", *args],
+            [sys.executable, "-m", "mycevo.mcp.server", *args],
             cwd=str(paths.workspace),
             env=service_env(paths),
         )
@@ -72,15 +76,15 @@ def init_workspace(paths: Paths) -> dict[str, Any]:
     paths.workspace_meta.mkdir(parents=True, exist_ok=True)
     config = {
         "version": 1,
-        "product": "Resevo",
+        "product": "MycEvo",
         "workspace_root": str(paths.workspace),
         "engine_root": str(paths.engine),
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
-    user_created = write_yaml_if_missing(paths.user_config, {"version": 1, "product": "Resevo", "workspaces": []})
+    user_created = write_yaml_if_missing(paths.user_config, {"version": 1, "product": "MycEvo", "workspaces": []})
     workspace_created = write_yaml_if_missing(paths.workspace_config, config)
     created: list[str] = []
-    seed = files("resevo.resources").joinpath("workspace")
+    seed = files("mycevo.resources").joinpath("workspace")
     def copy_seed(node, relative: Path = Path()) -> None:
         for item in node.iterdir():
             item_relative = relative / item.name
@@ -98,7 +102,7 @@ def init_workspace(paths: Paths) -> dict[str, Any]:
         (paths.workspace / dirname).mkdir(parents=True, exist_ok=True)
     return {
         "ok": True,
-        "product": "Resevo",
+        "product": "MycEvo",
         "user_root": str(paths.user),
         "workspace_root": str(paths.workspace),
         "user_config_created": user_created,
@@ -109,36 +113,62 @@ def init_workspace(paths: Paths) -> dict[str, Any]:
 
 def run_demo(paths: Paths) -> dict[str, Any]:
     init_workspace(paths)
+    demo_root = paths.workspace / "examples" / "demo-paper"
+    intake_path = demo_root / "intake.yaml"
+    intake = {
+        "schema": "mycevo.intake.v1",
+        "task": "Turn a completed literature check into a reusable workflow candidate.",
+        "evidence": ["examples/demo-paper/README.md"],
+        "requested_status": "pending validation",
+    }
+    write_yaml_if_missing(intake_path, intake)
     registry_path = paths.workspace / "registry" / "knowledge.yaml"
     data = read_yaml(registry_path, {"version": 1, "knowledge": []})
     items = data.setdefault("knowledge", [])
-    demo_id = "resevo-demo-candidate"
+    demo_id = "mycevo-demo-candidate"
     if not any(item.get("id") == demo_id for item in items):
         items.append({
             "id": demo_id,
-            "title": "Five-minute Resevo demo candidate",
+            "title": "Five-minute MycEvo demo candidate",
             "status": "pending validation",
-            "provenance": {"source": "resevo demo"},
+            "provenance": {"source": "mycevo demo"},
             "evidence_refs": [],
         })
         registry_path.write_text(__import__("yaml").safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
-    run = record_run(paths.workspace, "resevo-demo", ["resevo", "demo"], inputs=[], outputs=[registry_path])
+    validation = {
+        "ok": True,
+        "candidate_id": demo_id,
+        "status": "pending validation",
+        "promotion_allowed": False,
+        "checks": {"evidence_reference_present": True, "human_gate_required": True},
+    }
+    validation_path = demo_root / "validation.json"
+    validation_path.write_text(json.dumps(validation, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    closeout_path = demo_root / "closeout.json"
+    closeout_path.write_text(json.dumps({"ok": True, "candidate_written": True, "promotion_performed": False}, indent=2) + "\n", encoding="utf-8")
+    recall = [item for item in items if item.get("id") == demo_id]
+    recall_path = demo_root / "recall.json"
+    recall_path.write_text(json.dumps({"ok": True, "results": recall}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    run = record_run(paths.workspace, "mycevo-demo", ["mycevo", "demo"], inputs=[intake_path], outputs=[registry_path, validation_path, closeout_path, recall_path])
     return {
         "ok": True,
-        "product": "Resevo",
+        "product": "MycEvo",
         "workspace_root": str(paths.workspace),
         "candidate_id": demo_id,
         "candidate_status": "pending validation",
         "promotion_performed": False,
+        "stages": ["task", "intake", "candidate writeback", "validation", "closeout", "recall"],
+        "validation": validation,
+        "recall_count": len(recall),
         "run_dir": run["run_dir"],
-        "next": "resevo mcp install codex --dry-run",
+        "next": "mycevo mcp install codex --dry-run",
     }
 
 
 def doctor(paths: Paths) -> dict[str, Any]:
     checks = {
         "engine_exists": paths.engine.exists(),
-        "resevo_package_importable": True,
+        "mycevo_package_importable": True,
         "mcp_entry_importable": True,
         "workspace_exists": paths.workspace.exists(),
         "workspace_configured": paths.workspace_config.exists(),
@@ -150,7 +180,7 @@ def doctor(paths: Paths) -> dict[str, Any]:
         checks["fastmcp_importable"] = True
     except ImportError:
         checks["fastmcp_importable"] = False
-    return {"ok": all(checks.values()), "product": "Resevo", "paths": {"engine": str(paths.engine), "workspace": str(paths.workspace), "user": str(paths.user)}, "checks": checks}
+    return {"ok": all(checks.values()), "product": "MycEvo", "paths": {"engine": str(paths.engine), "workspace": str(paths.workspace), "user": str(paths.user)}, "checks": checks}
 
 
 def status(paths: Paths) -> dict[str, Any]:
@@ -158,7 +188,7 @@ def status(paths: Paths) -> dict[str, Any]:
     lock = read_yaml(paths.workspace / "researchloop.lock.yaml", {})
     return {
         "ok": True,
-        "product": "Resevo",
+        "product": "MycEvo",
         "paths": {"engine": str(paths.engine), "workspace": str(paths.workspace), "user": str(paths.user)},
         "workspace_configured": bool(data),
         "engine_version": lock.get("engine", {}).get("version") if isinstance(lock, dict) else None,
@@ -198,20 +228,42 @@ def workspace_remove(paths: Paths, name: str) -> dict[str, Any]:
 
 
 def migration_plan(paths: Paths, apply: bool = False) -> dict[str, Any]:
+    legacy = paths.legacy_workspace_meta
+    backup = paths.workspace / ".mycevo-migration-backup" / "resevo"
     result = {
         "ok": True,
-        "migration": "researchloop-to-resevo",
+        "migration": "resevo-to-mycevo",
         "apply": apply,
         "actions": [
-            "use resevo CLI and resevo import package",
-            "retain researchloop CLI and research_harness_mcp.py compatibility wrappers",
+            "use mycevo CLI and mycevo import package",
+            "retain resevo, researchloop, and historical MCP compatibility wrappers",
             "preserve historical trace, ledger, and persistent IDs",
             "do not move or copy project data, papers, PDFs, images, or model files",
         ],
         "workspace_root": str(paths.workspace),
+        "legacy_meta": str(legacy),
+        "target_meta": str(paths.workspace_meta),
+        "backup": str(backup),
+        "legacy_exists": legacy.exists(),
+        "rollback": f"restore {backup} to {legacy}",
     }
     if apply:
-        result["written"] = write_yaml_if_missing(paths.workspace_meta / "migration-researchloop.yaml", result)
+        if legacy.exists():
+            if backup.exists():
+                result.update({"ok": False, "status": "backup_exists", "changed": False})
+                return result
+            backup.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(legacy, backup)
+            paths.workspace_meta.mkdir(parents=True, exist_ok=True)
+            for source in legacy.rglob("*"):
+                if source.is_file():
+                    relative = source.relative_to(legacy)
+                    target = paths.workspace_meta / relative
+                    if not target.exists():
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(source, target)
+        result["written"] = write_yaml_if_missing(paths.workspace_meta / "migration-resevo.yaml", result)
+        result["changed"] = bool(legacy.exists() or result["written"])
     return result
 
 

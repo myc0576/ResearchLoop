@@ -13,8 +13,8 @@ from typing import Any
 from .core import Paths
 
 
-MCP_SERVER_NAME = "resevo"
-MCP_DISPLAY_NAME = "Resevo"
+MCP_SERVER_NAME = "mycevo"
+MCP_DISPLAY_NAME = "MycEvo"
 SUPPORTED_AGENTS = {"codex", "claude"}
 
 
@@ -22,10 +22,12 @@ def command_for(agent: str, action: str, paths: Paths | None = None) -> list[str
     if agent not in SUPPORTED_AGENTS:
         raise ValueError(f"unsupported agent: {agent}")
     if action == "add":
-        command = [agent, "mcp", "add", MCP_SERVER_NAME, "--", "resevo"]
+        command = [agent, "mcp", "add"]
         if paths is not None:
-            command.extend(["--workspace-root", str(paths.workspace), "--engine-root", str(paths.engine)])
-        return [*command, "mcp", "serve"]
+            env_flag = "--env" if agent == "codex" else "-e"
+            command.extend([env_flag, f"MYCEVO_ENGINE_ROOT={paths.engine}", env_flag, f"MYCEVO_ROOT={paths.workspace}"])
+        command.extend([MCP_SERVER_NAME, "--", "mycevo", "--workspace-root", str(paths.workspace) if paths else ".", "--engine-root", str(paths.engine) if paths else ".", "mcp", "serve"])
+        return command
     if action == "get":
         return [agent, "mcp", "get", MCP_SERVER_NAME]
     if action == "remove":
@@ -34,7 +36,7 @@ def command_for(agent: str, action: str, paths: Paths | None = None) -> list[str
 
 
 def snippet(agent: str, paths: Paths | None = None) -> str:
-    command = command_for(agent, "add", paths) if agent in SUPPORTED_AGENTS else [agent, "mcp", "add", MCP_SERVER_NAME, "--", "resevo", "mcp", "serve"]
+    command = command_for(agent, "add", paths) if agent in SUPPORTED_AGENTS else [agent, "mcp", "add", MCP_SERVER_NAME, "--", "mycevo", "mcp", "serve"]
     return " ".join(command)
 
 
@@ -42,7 +44,7 @@ def _record_preflight(paths: Paths, agent: str, action: str, completed: subproce
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output = (completed.stdout if completed else "") + (completed.stderr if completed else "")
     record = {
-        "schema": "resevo_mcp_preflight.v1",
+        "schema": "mycevo_mcp_preflight.v1",
         "created_at": datetime.now(timezone.utc).isoformat(),
         "agent": agent,
         "action": action,

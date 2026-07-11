@@ -3,12 +3,12 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "resevo"
-version = "0.1.0"
+name = "mycevo"
+version = "0.2.0"
 description = "Evidence-governed self-evolving research workflow harness."
 readme = "README.md"
 requires-python = ">=3.10"
-authors = [{ name = "Resevo maintainers" }]
+authors = [{ name = "MycEvo maintainers" }]
 dependencies = [
   "PyYAML>=6.0",
   "fastmcp>=2.0",
@@ -17,11 +17,12 @@ dependencies = [
 ]
 
 [project.scripts]
-resevo = "resevo.cli:main"
-researchloop = "resevo.compat:main"
+mycevo = "mycevo.cli:main"
+resevo = "mycevo.compat:resevo_main"
+researchloop = "mycevo.compat:researchloop_main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-resevo = ["resources/workspace/**/*"]
+mycevo = ["resources/workspace/**/*"]

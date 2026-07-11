@@ -1,5 +1,5 @@
-"""Deprecated compatibility import package; use :mod:`resevo`."""
+"""Deprecated compatibility import package; use :mod:`mycevo`."""
 
-from resevo import __brand__, __positioning__, __version__
+from mycevo import __brand__, __positioning__, __version__
 
 __all__ = ["__brand__", "__positioning__", "__version__"]

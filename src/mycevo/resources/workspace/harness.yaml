@@ -1,5 +1,5 @@
 version: 1
-product: Resevo
+product: MycEvo
 paths:
   knowledge_root: knowledge
   prompts_root: prompts

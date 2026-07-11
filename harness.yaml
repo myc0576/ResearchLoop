@@ -1,9 +1,9 @@
-﻿version: 1
-name: Resevo
-description: 'Resevo: Evidence-Governed Self-Evolving Research Workflow Harness.'
+version: 1
+name: MycEvo
+description: 'MycEvo: Evidence-Governed Self-Evolving Research Workflow Harness.'
 
 brand:
-  name: Resevo
+  name: MycEvo
   positioning: 'Evidence-Governed Self-Evolving Research Workflow Harness'
   local_directory_note: 'The repository brand and canonical local entry are configured by the user; historical researchloop and research-harness identifiers remain only for compatibility.'
 
@@ -71,7 +71,7 @@ automation:
 search:
   canonical_engine: sqlite_fts5
   sqlite_path: 'state/kb_index/research_kb.sqlite'
-  mcp_server: 'mcp/resevo_mcp.py'
+  mcp_server: 'mcp/mycevo_mcp.py'
   openviking_status: legacy_optional_noncanonical
   openviking_cleanup_inventory: 'reports/openviking_cleanup_inventory.md'
 
@@ -191,8 +191,8 @@ rules:
   no_large_data_in_knowledge: true
   no_literature_pdf_originals_in_reusable_knowledge: true
   small_paper_manuscript_figures_and_submission_default_to_docs_root: true
-  resevo_only_stores_templates_workflows_indexes_and_decisions_for_papers: true
-  resevo_brand_name: true
+  mycevo_only_stores_templates_workflows_indexes_and_decisions_for_papers: true
+  mycevo_brand_name: true
   visual_refs_require_figure_card: true
   paper_contract_required_for_paper_outputs: true
   no_legacy_move_or_delete_without_explicit_request: true

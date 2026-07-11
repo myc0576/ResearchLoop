@@ -1,4 +1,4 @@
-"""Deprecated Resevo MCP wrapper; use ``mycevo.mcp.server``."""
+"""Checkout wrapper for the packaged MycEvo MCP server."""
 
 from mycevo.mcp.server import *  # noqa: F403
 from mycevo.mcp.server import main

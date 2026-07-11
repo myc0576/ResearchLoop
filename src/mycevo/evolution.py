@@ -40,13 +40,13 @@ def evaluate_guard(
 ) -> dict[str, Any]:
     """Evaluate a candidate without promoting any registry status."""
     run_id = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{uuid.uuid4().hex[:8]}"
-    run_dir = workspace / ".resevo" / "evolution" / run_id
+    run_dir = workspace / ".mycevo" / "evolution" / run_id
     improvement = float(candidate_score) - float(champion_score)
     threshold_pass = improvement >= float(minimum_improvement)
     accepted = bool(held_out_pass and threshold_pass)
     status = "candidate_accepted_for_experiment" if accepted else "reverted"
     contract = {
-        "schema": "resevo.evolution_contract.v1",
+        "schema": "mycevo.evolution_contract.v1",
         "workflow_id": workflow_id,
         "minimum_improvement": float(minimum_improvement),
         "requires_held_out_pass": True,
@@ -61,7 +61,7 @@ def evaluate_guard(
         "threshold_pass": threshold_pass,
     }
     decision = {
-        "schema": "resevo.evolution_decision.v1",
+        "schema": "mycevo.evolution_decision.v1",
         "run_id": run_id,
         "workflow_id": workflow_id,
         "status": status,
