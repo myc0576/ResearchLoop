@@ -1,1 +1,102 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="t d"><title id="t">MycEvo product loop</title><desc id="d">Evidence-gated paper-to-paper workflow inheritance.</desc><rect width="1600" height="900" fill="#F7FAFC"/><g font-family="Arial" fill="#17212B"><text x="80" y="90" font-size="54" font-weight="700">MycEvo</text><text x="80" y="132" font-size="22" fill="#52606D">Evidence-governed workflow evolution</text></g><g font-family="Arial" text-anchor="middle"><path d="M190 405H1380" stroke="#1B8A78" stroke-width="8"/><path d="M1380 405C1480 405 1480 690 1260 690H300C120 690 110 540 190 470" fill="none" stroke="#E76F51" stroke-width="5" stroke-dasharray="12 10"/><g fill="#fff" stroke="#22313F" stroke-width="2"><rect x="70" y="330" width="220" height="150" rx="10"/><rect x="320" y="330" width="220" height="150" rx="10"/><rect x="570" y="330" width="220" height="150" rx="10"/><rect x="820" y="330" width="220" height="150" rx="10"/><rect x="1070" y="330" width="220" height="150" rx="10"/><rect x="1320" y="330" width="220" height="150" rx="10"/></g><g fill="#17212B" font-size="21"><text x="180" y="390">Real research</text><text x="180" y="420">tasks</text><text x="430" y="390">Evidence</text><text x="430" y="420">capture</text><text x="680" y="382">Candidate workflow</text><text x="680" y="415">memory</text><text x="930" y="390">Validation</text><text x="930" y="420">gate</text><text x="1180" y="382">Reusable</text><text x="1180" y="415">workflow</text><text x="1430" y="390">Next paper</text></g><text x="800" y="720" fill="#B45309" font-size="22">Feedback loop: real use produces evidence, never silent promotion</text></g><g font-family="Arial" fill="#1B8A78"><circle cx="370" cy="230" r="9"/><circle cx="440" cy="195" r="7"/><circle cx="510" cy="245" r="8"/><path d="M370 230L440 195L510 245" stroke="#1B8A78" stroke-width="3" fill="none"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="product-light-title product-light-desc">
+<title id="product-light-title">How MycEvo Evolves a Research Workflow</title>
+<desc id="product-light-desc">Real research tasks create evidence, which enters candidate workflow memory. A validation gate blocks silent promotion. Only validated lessons become reusable workflows for the next paper, which produces new feedback and evidence.</desc>
+<defs>
+  <marker id="product-light-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M1 1 L11 6 L1 11 Z" fill="#2F2A26"/></marker>
+  <marker id="product-light-forest-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M1 1 L11 6 L1 11 Z" fill="#405A47"/></marker>
+  <style>
+    text { font-family: Inter, Arial, system-ui, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif; fill: #2F2A26; }
+    .title { font-size: 50px; font-weight: 750; letter-spacing: -1.2px; }
+    .subtitle { font-size: 24px; fill: #746B63; }
+    .eyebrow { font-size: 17px; font-weight: 750; letter-spacing: 2.2px; fill: #405A47; }
+    .stage { font-size: 27px; font-weight: 750; }
+    .small { font-size: 18px; fill: #746B63; }
+    .micro { font-size: 15px; fill: #746B63; }
+    .pill { font-size: 15px; font-weight: 750; letter-spacing: 1.2px; }
+    .flow { fill: none; stroke: #2F2A26; stroke-width: 5; stroke-linecap: round; marker-end: url(#product-light-arrow); }
+    .feedback { fill: none; stroke: #405A47; stroke-width: 5; stroke-linecap: round; marker-end: url(#product-light-forest-arrow); }
+    .line { fill: none; stroke: #D9CEC2; stroke-width: 3; stroke-linecap: round; }
+  </style>
+</defs>
+<rect width="1600" height="900" fill="#F7F3EA"/>
+<rect x="38" y="38" width="1524" height="824" rx="28" fill="#FFFDF8" stroke="#D9CEC2" stroke-width="2"/>
+<text x="78" y="94" class="eyebrow">EVIDENCE-GOVERNED EVOLUTION</text>
+<text x="78" y="158" class="title">How MycEvo Evolves a Research Workflow</text>
+<text x="80" y="202" class="subtitle">Every task creates evidence. Only validated lessons become reusable.</text>
+<line x1="80" y1="240" x2="1520" y2="240" stroke="#D9CEC2" stroke-width="2"/>
+
+<!-- directional main path -->
+<path d="M270 450 H310" class="flow"/>
+<path d="M510 450 H550" class="flow"/>
+<path d="M770 450 H815" class="flow"/>
+<path d="M1045 450 H1090" class="flow"/>
+<path d="M1310 450 H1350" class="flow"/>
+
+<!-- Real research tasks -->
+<g aria-label="Real Research Tasks">
+  <rect x="80" y="335" width="190" height="230" rx="22" fill="#FFFDF8" stroke="#D9CEC2" stroke-width="3"/>
+  <circle cx="122" cy="374" r="13" fill="#C99A4A"/>
+  <path d="M151 374 H230 M111 412 H236 M111 438 H220" stroke="#68775A" stroke-width="8" stroke-linecap="round"/>
+  <text x="175" y="487" text-anchor="middle" class="stage"><tspan x="175">Real Research</tspan><tspan x="175" dy="34">Tasks</tspan></text>
+  <text x="175" y="550" text-anchor="middle" class="micro">paper · code · review</text>
+</g>
+
+<!-- Evidence capture -->
+<g aria-label="Evidence Capture">
+  <rect x="334" y="356" width="160" height="190" rx="18" fill="#F4EFE8" stroke="#D9CEC2" stroke-width="2"/>
+  <rect x="320" y="335" width="180" height="205" rx="18" fill="#FFFDF8" stroke="#D9CEC2" stroke-width="3"/>
+  <path d="M352 377 H468 M352 410 H451 M352 443 H473" stroke="#D97757" stroke-width="7" stroke-linecap="round"/>
+  <text x="410" y="487" text-anchor="middle" class="stage"><tspan x="410">Evidence</tspan><tspan x="410" dy="34">Capture</tspan></text>
+  <text x="410" y="550" text-anchor="middle" class="micro">traces · diffs · outputs</text>
+</g>
+
+<!-- Candidate memory -->
+<g aria-label="Candidate Workflow Memory">
+  <rect x="560" y="335" width="210" height="230" rx="28" fill="#F4EFE8" stroke="#746B63" stroke-width="3" stroke-dasharray="11 9"/>
+  <path d="M615 399 C646 375 686 376 716 402 M615 399 C640 426 674 438 716 402" fill="none" stroke="#68775A" stroke-width="4"/>
+  <circle cx="615" cy="399" r="11" fill="#68775A"/><circle cx="665" cy="389" r="11" fill="#C99A4A"/><circle cx="716" cy="402" r="11" fill="#D97757"/>
+  <rect x="598" y="448" width="134" height="34" rx="17" fill="#FFFDF8" stroke="#746B63" stroke-width="2"/>
+  <text x="665" y="470" text-anchor="middle" class="pill">CANDIDATE</text>
+  <text x="665" y="500" text-anchor="middle" class="stage"><tspan x="665">Workflow</tspan><tspan x="665" dy="32">Memory</tspan></text>
+  <text x="665" y="558" text-anchor="middle" class="micro">held, not promoted</text>
+</g>
+
+<!-- Validation gate -->
+<g aria-label="Validation Gate">
+  <rect x="815" y="310" width="230" height="280" rx="30" fill="#F9E6DE" stroke="#D97757" stroke-width="5"/>
+  <circle cx="930" cy="376" r="38" fill="#D97757"/>
+  <path d="M930 354 V398 M908 376 H952" stroke="#FFFDF8" stroke-width="8" stroke-linecap="round"/>
+  <text x="930" y="452" text-anchor="middle" class="stage"><tspan x="930">Validation</tspan><tspan x="930" dy="34">Gate</tspan></text>
+  <line x1="858" y1="505" x2="1002" y2="505" stroke="#D97757" stroke-width="3"/>
+  <text x="930" y="535" text-anchor="middle" class="small">evidence check</text>
+  <text x="930" y="562" text-anchor="middle" class="small">human-controlled status</text>
+</g>
+<rect x="825" y="610" width="210" height="44" rx="22" fill="#D97757"/>
+<text x="930" y="638" text-anchor="middle" class="pill" style="fill:#2F2A26">NO SILENT PROMOTION</text>
+
+<!-- Reusable workflow -->
+<g aria-label="Reusable Workflow">
+  <rect x="1090" y="335" width="220" height="230" rx="26" fill="#E7ECE3" stroke="#405A47" stroke-width="4"/>
+  <rect x="1136" y="370" width="128" height="76" rx="18" fill="#405A47"/>
+  <path d="M1170 407 L1190 427 L1232 384" fill="none" stroke="#FFFDF8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1200" y="487" text-anchor="middle" class="stage"><tspan x="1200">Reusable</tspan><tspan x="1200" dy="34">Workflow</tspan></text>
+  <text x="1200" y="550" text-anchor="middle" class="micro">validated · versioned</text>
+</g>
+
+<!-- Next paper -->
+<g aria-label="Next Paper">
+  <path d="M1350 335 H1492 L1520 363 V565 H1350 Z" fill="#FFFDF8" stroke="#D9CEC2" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M1492 335 V363 H1520" fill="#F4EFE8" stroke="#D9CEC2" stroke-width="3"/>
+  <path d="M1384 391 H1480 M1384 425 H1466 M1384 459 H1490" stroke="#68775A" stroke-width="6" stroke-linecap="round"/>
+  <text x="1435" y="487" text-anchor="middle" class="stage"><tspan x="1435">Next</tspan><tspan x="1435" dy="34">Paper</tspan></text>
+  <text x="1435" y="550" text-anchor="middle" class="micro">applies the pattern</text>
+</g>
+
+<!-- feedback loop -->
+<path d="M1435 586 C1438 714 1320 770 1120 780 C820 795 410 795 180 745 C118 731 102 665 128 602" class="feedback"/>
+<rect x="586" y="720" width="428" height="70" rx="35" fill="#FFFDF8" stroke="#405A47" stroke-width="3"/>
+<text x="800" y="750" text-anchor="middle" class="stage">Feedback Loop</text>
+<text x="800" y="776" text-anchor="middle" class="micro">validated memory informs future tasks; new work creates new evidence</text>
+<rect x="80" y="790" width="330" height="42" rx="21" fill="#F4EFE8" stroke="#C99A4A" stroke-width="2"/>
+<text x="245" y="817" text-anchor="middle" class="pill">EVIDENCE COMES FROM REAL WORK</text>
+</svg>
