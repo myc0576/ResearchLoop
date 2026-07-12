@@ -1,1 +1,100 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img"><rect width="1600" height="900" fill="#101820"/><text x="70" y="85" font-family="Arial" font-size="48" font-weight="700" fill="#F5F7FA">MycEvo technical architecture</text><g font-family="Arial" text-anchor="middle"><g fill="#182630" stroke="#36C2A6" stroke-width="2"><rect x="60" y="230" width="250" height="100" rx="9"/><rect x="370" y="230" width="220" height="100" rx="9"/><rect x="650" y="230" width="250" height="100" rx="9"/><rect x="970" y="180" width="500" height="200" rx="9"/><rect x="1030" y="500" width="210" height="90" rx="9"/><rect x="1030" y="650" width="210" height="90" rx="9"/><rect x="1310" y="650" width="220" height="90" rx="9"/></g><g fill="#F5F7FA" font-size="20"><text x="185" y="275">Codex / Claude</text><text x="185" y="304">Cursor</text><text x="480" y="290">CLI / stdio MCP</text><text x="775" y="290">Shared MycEvo Core</text><text x="1220" y="230">Private Research Workspace</text><text x="1220" y="275">Registry · Retrieval · Provenance</text><text x="1220" y="310">Validators · Claims · Artifacts</text><text x="1135" y="555">Candidate</text><text x="1135" y="692">Evidence gate</text><text x="1420" y="692">Human promotion</text></g><path d="M310 280H360M590 280H640M900 280H960M1135 380V490M1135 590V640M1240 695H1300" stroke="#36C2A6" stroke-width="6"/><path d="M1420 750C1420 820 775 820 775 340" fill="none" stroke="#F97352" stroke-width="4" stroke-dasharray="10 8"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="technical-dark-title technical-dark-desc">
+<title id="technical-dark-title">MycEvo Technical Architecture</title>
+<desc id="technical-dark-desc">External agents use the CLI or stdio MCP to access the public MycEvo core, which serves a private research workspace. Candidate memory passes through held-out validation, an evidence gate, and human promotion before becoming reusable. A separate sanitized path can improve the public engine without uploading raw private evidence.</desc>
+<defs>
+  <marker id="technical-dark-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M1 1 L11 6 L1 11 Z" fill="#F6F0E7"/></marker>
+  <marker id="technical-dark-forest-arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse"><path d="M1 1 L11 6 L1 11 Z" fill="#9CAE91"/></marker>
+  <style>
+    text { font-family: Inter, Arial, system-ui, Noto Sans SC, Microsoft YaHei, PingFang SC, sans-serif; fill: #F6F0E7; }
+    .title { font-size: 50px; font-weight: 750; letter-spacing: -1.2px; }
+    .subtitle { font-size: 24px; fill: #BDB3A8; }
+    .eyebrow { font-size: 17px; font-weight: 750; letter-spacing: 2.2px; fill: #9CAE91; }
+    .stage { font-size: 27px; font-weight: 750; }
+    .small { font-size: 18px; fill: #BDB3A8; }
+    .micro { font-size: 15px; fill: #BDB3A8; }
+    .pill { font-size: 15px; font-weight: 750; letter-spacing: 1.2px; }
+    .flow { fill: none; stroke: #F6F0E7; stroke-width: 5; stroke-linecap: round; marker-end: url(#technical-dark-arrow); }
+    .feedback { fill: none; stroke: #9CAE91; stroke-width: 5; stroke-linecap: round; marker-end: url(#technical-dark-forest-arrow); }
+    .line { fill: none; stroke: #4A433C; stroke-width: 3; stroke-linecap: round; }
+  </style>
+</defs>
+<rect width="1600" height="900" fill="#211F1C"/>
+<rect x="38" y="38" width="1524" height="824" rx="28" fill="#2B2824" stroke="#4A433C" stroke-width="2"/>
+<text x="72" y="93" class="eyebrow">LOCAL CLI + MCP EXTERNAL BRAIN</text>
+<text x="72" y="154" class="title">MycEvo Technical Architecture</text>
+<text x="74" y="198" class="subtitle">A local CLI and MCP external brain with evidence-gated evolution</text>
+
+<!-- runtime dependency layer -->
+<rect x="70" y="242" width="250" height="245" rx="24" fill="#2B2824" stroke="#4A433C" stroke-width="3"/>
+<text x="95" y="278" class="eyebrow">EXTERNAL AGENTS</text>
+<rect x="100" y="304" width="190" height="48" rx="14" fill="#332F2A" stroke="#4A433C" stroke-width="2"/><text x="195" y="336" text-anchor="middle" class="stage" style="font-size:23px">Codex</text>
+<rect x="100" y="365" width="190" height="48" rx="14" fill="#332F2A" stroke="#4A433C" stroke-width="2"/><text x="195" y="397" text-anchor="middle" class="stage" style="font-size:23px">Claude Code</text>
+<rect x="100" y="426" width="190" height="38" rx="13" fill="#332F2A" stroke="#4A433C" stroke-width="2"/><text x="195" y="452" text-anchor="middle" class="stage" style="font-size:21px">Cursor</text>
+
+<rect x="365" y="224" width="610" height="280" rx="28" fill="#332F2A" stroke="#E58A68" stroke-width="3"/>
+<text x="395" y="262" class="eyebrow" style="fill:#E58A68">PUBLIC MYCEVO ENGINE</text>
+<rect x="400" y="304" width="210" height="140" rx="22" fill="#2B2824" stroke="#4A433C" stroke-width="3"/>
+<text x="505" y="354" text-anchor="middle" class="stage"><tspan x="505">CLI /</tspan><tspan x="505" dy="34">stdio MCP</tspan></text>
+<text x="505" y="420" text-anchor="middle" class="micro">agent-safe access</text>
+<rect x="680" y="290" width="250" height="170" rx="24" fill="#3B2A24" stroke="#E58A68" stroke-width="4"/>
+<text x="805" y="350" text-anchor="middle" class="stage"><tspan x="805">Shared</tspan><tspan x="805" dy="34">MycEvo Core</tspan></text>
+<text x="805" y="420" text-anchor="middle" class="micro">portable services + contracts</text>
+
+<path d="M320 365 H390" class="flow"/>
+<path d="M610 375 H670" class="flow"/>
+<path d="M930 375 H1000" class="flow"/>
+
+<rect x="1015" y="224" width="505" height="280" rx="28" fill="#30382D" stroke="#9CAE91" stroke-width="4"/>
+<text x="1045" y="262" class="eyebrow">PRIVATE RESEARCH WORKSPACE</text>
+<text x="1045" y="291" class="micro">project-local evidence, claims, artifacts, and decisions</text>
+<rect x="1045" y="320" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1095" y="354" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Registry</text>
+<rect x="1158" y="320" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1208" y="354" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Retrieval</text>
+<rect x="1271" y="320" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1321" y="354" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Provenance</text>
+<rect x="1384" y="320" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1434" y="354" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Validators</text>
+<rect x="1045" y="398" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1095" y="432" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Claims</text>
+<rect x="1158" y="398" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1208" y="432" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Evidence</text>
+<rect x="1271" y="398" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1321" y="432" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Artifacts</text>
+<rect x="1384" y="398" width="100" height="54" rx="14" fill="#2B2824" stroke="#4A433C" stroke-width="2"/><text x="1434" y="432" text-anchor="middle" class="small" style="fill:#F6F0E7;font-size:16px">Decisions</text>
+
+<line x1="72" y1="532" x2="1528" y2="532" stroke="#4A433C" stroke-width="2"/>
+
+<!-- evolution gate -->
+<text x="72" y="566" class="eyebrow" style="fill:#E58A68">EVOLUTION GATE · CANDIDATE-FIRST</text>
+<text x="1518" y="566" text-anchor="end" class="micro">reusable status requires evidence and a human decision</text>
+<g aria-label="Candidate to reusable workflow memory gate">
+  <rect x="80" y="590" width="190" height="70" rx="22" fill="#332F2A" stroke="#BDB3A8" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="175" y="634" text-anchor="middle" class="stage" style="font-size:24px">Candidate</text>
+  <path d="M270 625 H328" class="flow"/>
+  <rect x="338" y="590" width="230" height="70" rx="22" fill="#2B2824" stroke="#4A433C" stroke-width="3"/>
+  <text x="453" y="618" text-anchor="middle" class="small" style="fill:#F6F0E7"><tspan x="453">Held-out</tspan><tspan x="453" dy="24">Validation</tspan></text>
+  <path d="M568 625 H626" class="flow"/>
+  <rect x="636" y="578" width="210" height="94" rx="24" fill="#3B2A24" stroke="#E58A68" stroke-width="4"/>
+  <text x="741" y="620" text-anchor="middle" class="stage" style="font-size:24px">Evidence Gate</text>
+  <text x="741" y="650" text-anchor="middle" class="micro">dominant stop line</text>
+  <path d="M846 625 H904" class="flow"/>
+  <rect x="914" y="590" width="220" height="70" rx="22" fill="#2B2824" stroke="#E58A68" stroke-width="3"/>
+  <circle cx="950" cy="616" r="11" fill="#E58A68"/><path d="M934 648 Q950 628 966 648" fill="none" stroke="#E58A68" stroke-width="3"/>
+  <text x="1035" y="618" text-anchor="middle" class="small" style="fill:#F6F0E7"><tspan x="1035">Human</tspan><tspan x="1035" dy="24">Promotion</tspan></text>
+  <path d="M1134 625 H1192" class="flow"/>
+  <rect x="1202" y="578" width="300" height="94" rx="24" fill="#30382D" stroke="#9CAE91" stroke-width="4"/>
+  <text x="1352" y="608" text-anchor="middle" class="stage" style="font-size:23px"><tspan x="1352">Reusable Workflow</tspan><tspan x="1352" dy="28">Memory</tspan></text>
+  <text x="1352" y="660" text-anchor="middle" class="micro">validated · versioned</text>
+</g>
+
+<!-- sanitized public-improvement path, spatially private-to-public (right to left) -->
+<text x="72" y="716" class="eyebrow">SANITIZED PUBLIC IMPROVEMENT · RIGHT TO LEFT</text>
+<text x="1518" y="716" text-anchor="end" class="micro">raw private evidence stays local</text>
+<g aria-label="Private real-world use to sanitized candidate to validation and review to public MycEvo improvement">
+  <rect x="1130" y="744" width="350" height="70" rx="22" fill="#30382D" stroke="#9CAE91" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="1305" y="774" text-anchor="middle" class="small" style="fill:#F6F0E7"><tspan x="1305">Private real-world use</tspan><tspan x="1305" dy="24">raw evidence stays here</tspan></text>
+  <path d="M1130 779 H1075" class="feedback"/>
+  <rect x="780" y="744" width="285" height="70" rx="22" fill="#332F2A" stroke="#9CAE91" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="922" y="786" text-anchor="middle" class="small" style="fill:#F6F0E7">Sanitized candidate</text>
+  <path d="M780 779 H725" class="feedback"/>
+  <rect x="430" y="744" width="285" height="70" rx="22" fill="#2B2824" stroke="#9CAE91" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="572" y="786" text-anchor="middle" class="small" style="fill:#F6F0E7">Validation and review</text>
+  <path d="M430 779 H375" class="feedback"/>
+  <rect x="80" y="744" width="285" height="70" rx="22" fill="#3B2A24" stroke="#E58A68" stroke-width="3" stroke-dasharray="10 8"/>
+  <text x="222" y="774" text-anchor="middle" class="small" style="fill:#F6F0E7"><tspan x="222">Public MycEvo</tspan><tspan x="222" dy="24">improvement</tspan></text>
+</g>
+</svg>
