@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MycEvo Warm Editorial Flow Boards</title>
+  <style>
+    :root {
+      --bg: #F7F3EA;
+      --paper: #FFFDF8;
+      --terracotta: #D97757;
+      --charcoal: #2F2A26;
+      --sage: #68775A;
+      --forest: #405A47;
+      --border: #D9CEC2;
+      --muted: #746B63;
+      --gold: #C99A4A;
+      --dark-bg: #211F1C;
+      --dark-card: #2B2824;
+      --dark-terracotta: #E58A68;
+      --dark-sage: #879879;
+      --dark-primary: #F6F0E7;
+      --dark-muted: #BDB3A8;
+      --dark-border: #4A433C;
+      --font-body: Inter, Arial, system-ui, "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--charcoal);
+      font-family: var(--font-body);
+      line-height: 1.55;
+    }
+
+    .page {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.7fr);
+      gap: 32px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .kicker {
+      margin: 0 0 12px;
+      color: var(--sage);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 12ch;
+      margin-bottom: 12px;
+      font-size: clamp(44px, 6vw, 88px);
+      line-height: 1;
+      letter-spacing: -0.025em;
+      font-weight: 760;
+    }
+
+    .intro p {
+      max-width: 64ch;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .brief-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--paper);
+      padding: 22px 24px;
+    }
+
+    .brief-card h2 {
+      margin-bottom: 10px;
+      font-size: 20px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .brief-card ul {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .board-stack {
+      display: grid;
+      gap: 36px;
+    }
+
+    .board-shell {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: var(--paper);
+      overflow: auto;
+    }
+
+    .board {
+      width: 1600px;
+      height: 900px;
+      background: var(--paper);
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    svg {
+      display: block;
+      width: 1600px;
+      height: 900px;
+    }
+
+    text {
+      font-family: var(--font-body);
+      fill: var(--charcoal);
+    }
+
+    .svg-title {
+      font-size: 56px;
+      font-weight: 760;
+      letter-spacing: -0.024em;
+    }
+
+    .svg-subtitle {
+      fill: var(--muted);
+      font-size: 28px;
+      font-weight: 520;
+    }
+
+    .label-caps {
+      font-size: 20px;
+      font-weight: 760;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .node-title {
+      font-size: 30px;
+      font-weight: 760;
+      letter-spacing: -0.012em;
+    }
+
+    .node-copy {
+      fill: var(--muted);
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .tiny-note {
+      fill: var(--muted);
+      font-size: 21px;
+      font-weight: 560;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 36px;
+    }
+
+    .note-card {
+      min-height: 210px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--paper);
+      padding: 22px;
+    }
+
+    .note-card h2 {
+      margin-bottom: 12px;
+      color: var(--forest);
+      font-size: 19px;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .note-card p,
+    .note-card li {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .note-card ul {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        padding: 22px;
+      }
+
+      .intro,
+      .notes {
+        grid-template-columns: 1fr;
+      }
+
+      .board-shell {
+        border-radius: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" data-od-id="main">
+    <header class="intro" data-od-id="intro">
+      <div>
+        <p class="kicker">MycEvo README Direction</p>
+        <h1>Warm Editorial Flow</h1>
+        <p>Two editable 1600x900 boards exploring MycEvo as research governance: calm field-guide pacing, clear evidence boundaries, and a dominant terracotta validation checkpoint.</p>
+      </div>
+      <aside class="brief-card" data-od-id="brief-card">
+        <h2>Screenshot Targets</h2>
+        <ul>
+          <li><strong>#product-board</strong> explains the evolving workflow mechanism.</li>
+          <li><strong>#technical-board</strong> separates public engine, private workspace, and sanitized improvement flow.</li>
+          <li>Native HTML/CSS with inline SVG only; no remote assets or runtime dependencies.</li>
+        </ul>
+      </aside>
+    </header>
+
+    <div class="board-stack" data-od-id="board-stack">
+      <section class="board-shell" aria-label="Product mechanism board shell" data-od-id="product-board-shell">
+        <figure id="product-board" class="board" data-od-id="product-board">
+          <svg viewBox="0 0 1600 900" role="img" aria-labelledby="product-title product-subtitle">
+            <title id="product-title">How MycEvo Evolves a Research Workflow</title>
+            <desc id="product-subtitle">Every task creates evidence. Only validated lessons become reusable.</desc>
+            <defs>
+              <marker id="arrow-charcoal" markerWidth="18" markerHeight="18" refX="15" refY="9" orient="auto" markerUnits="strokeWidth">
+                <path d="M2,2 L16,9 L2,16 Z" style="fill: var(--charcoal);"></path>
+              </marker>
+              <marker id="arrow-terracotta" markerWidth="18" markerHeight="18" refX="15" refY="9" orient="auto" markerUnits="strokeWidth">
+                <path d="M2,2 L16,9 L2,16 Z" style="fill: var(--terracotta);"></path>
+              </marker>
+            </defs>
+
+            <rect x="0" y="0" width="1600" height="900" rx="0" style="fill: var(--bg);"></rect>
+            <rect x="42" y="42" width="1516" height="816" rx="26" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+
+            <text x="86" y="118" class="label-caps" style="fill: var(--sage);">Product-mechanism board</text>
+            <text x="86" y="185" class="svg-title">How MycEvo Evolves a Research Workflow</text>
+            <text x="89" y="232" class="svg-subtitle">Every task creates evidence. Only validated lessons become reusable.</text>
+
+            <path d="M185 620 C 385 705, 735 730, 1030 670 S 1405 560, 1445 388" style="fill: none; stroke: var(--border); stroke-width: 10; stroke-linecap: round;"></path>
+            <path d="M185 620 C 385 705, 735 730, 1030 670 S 1405 560, 1445 388" style="fill: none; stroke: var(--sage); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 14 18;"></path>
+
+            <g aria-label="Real Research Tasks">
+              <rect x="92" y="330" width="206" height="214" rx="22" style="fill: var(--paper); stroke: var(--border); stroke-width: 3;"></rect>
+              <path d="M130 386 H260 M130 428 H245 M130 470 H220" style="fill: none; stroke: var(--sage); stroke-width: 8; stroke-linecap: round;"></path>
+              <circle cx="132" cy="510" r="16" style="fill: var(--gold);"></circle>
+              <text x="124" y="594" class="node-title">Real</text>
+              <text x="124" y="629" class="node-title">Research Tasks</text>
+              <text x="124" y="673" class="node-copy">paper work,</text>
+              <text x="124" y="702" class="node-copy">review, analysis</text>
+            </g>
+
+            <path d="M310 445 H390" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-charcoal);"></path>
+
+            <g aria-label="Evidence Capture">
+              <rect x="406" y="356" width="206" height="152" rx="18" style="fill: var(--paper); stroke: var(--border); stroke-width: 3;"></rect>
+              <rect x="432" y="330" width="206" height="152" rx="18" style="fill: var(--paper); stroke: var(--border); stroke-width: 3;"></rect>
+              <path d="M465 382 H605 M465 418 H568" style="fill: none; stroke: var(--terracotta); stroke-width: 7; stroke-linecap: round;"></path>
+              <path d="M465 452 H600" style="fill: none; stroke: var(--border); stroke-width: 5; stroke-linecap: round;"></path>
+              <text x="420" y="594" class="node-title">Evidence</text>
+              <text x="420" y="629" class="node-title">Capture</text>
+              <text x="420" y="673" class="node-copy">commands, outputs,</text>
+              <text x="420" y="702" class="node-copy">citations, diffs</text>
+            </g>
+
+            <path d="M650 445 H725" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-charcoal);"></path>
+
+            <g aria-label="Candidate Workflow Memory">
+              <path d="M747 340 H932 C950 340 962 352 962 370 V506 C962 524 950 536 932 536 H747 C729 536 717 524 717 506 V370 C717 352 729 340 747 340 Z" style="fill: color-mix(in oklab, var(--sage), var(--paper) 82%); stroke: var(--sage); stroke-width: 3; stroke-dasharray: 10 8;"></path>
+              <path d="M758 386 H918 M758 424 H900 M758 462 H886" style="fill: none; stroke: var(--forest); stroke-width: 7; stroke-linecap: round;"></path>
+              <rect x="750" y="498" width="164" height="42" rx="21" style="fill: var(--paper); stroke: var(--sage); stroke-width: 2;"></rect>
+              <text x="770" y="526" class="label-caps" style="fill: var(--forest);">Candidate</text>
+              <text x="706" y="594" class="node-title">Candidate</text>
+              <text x="706" y="629" class="node-title">Workflow Memory</text>
+              <text x="706" y="673" class="node-copy">held as a lesson,</text>
+              <text x="706" y="702" class="node-copy">not a rule</text>
+            </g>
+
+            <path d="M986 445 H1044" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-charcoal);"></path>
+
+            <g aria-label="Validation Gate">
+              <rect x="1064" y="294" width="238" height="326" rx="26" style="fill: var(--terracotta);"></rect>
+              <rect x="1088" y="318" width="190" height="278" rx="18" style="fill: none; stroke: var(--paper); stroke-width: 4;"></rect>
+              <path d="M1122 448 H1244 M1183 388 V508" style="fill: none; stroke: var(--paper); stroke-width: 12; stroke-linecap: round;"></path>
+              <text x="1118" y="352" class="label-caps" style="fill: var(--paper);">Dominant</text>
+              <text x="1118" y="380" class="label-caps" style="fill: var(--paper);">checkpoint</text>
+              <text x="1108" y="662" class="node-title" style="fill: var(--charcoal);">Validation Gate</text>
+              <rect x="1048" y="690" width="270" height="58" rx="29" style="fill: var(--charcoal);"></rect>
+              <text x="1076" y="727" class="label-caps" style="fill: var(--paper);">No Silent Promotion</text>
+              <text x="1074" y="790" class="node-copy">validator evidence +</text>
+              <text x="1074" y="819" class="node-copy">human-controlled status</text>
+            </g>
+
+            <path d="M1322 445 H1376" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-charcoal);"></path>
+
+            <g aria-label="Reusable Workflow">
+              <rect x="1388" y="338" width="140" height="212" rx="22" style="fill: var(--forest);"></rect>
+              <path d="M1418 392 H1492 M1418 432 H1476 M1418 472 H1498" style="fill: none; stroke: var(--paper); stroke-width: 7; stroke-linecap: round;"></path>
+              <circle cx="1486" cy="518" r="18" style="fill: var(--gold);"></circle>
+              <text x="1352" y="594" class="node-title">Reusable</text>
+              <text x="1352" y="629" class="node-title">Workflow</text>
+              <text x="1352" y="673" class="node-copy">a validated pattern</text>
+              <text x="1352" y="702" class="node-copy">future agents can apply</text>
+            </g>
+
+            <path d="M1458 562 V616 C1458 642 1434 662 1408 662 H1368" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-charcoal);"></path>
+
+            <g aria-label="Next Paper">
+              <rect x="1138" y="644" width="160" height="94" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 3;"></rect>
+              <path d="M1166 684 H1270 M1166 712 H1242" style="fill: none; stroke: var(--sage); stroke-width: 6; stroke-linecap: round;"></path>
+              <text x="1136" y="776" class="node-title" style="font-size: 26px;">Next Paper</text>
+            </g>
+
+            <path d="M1128 704 C920 808, 508 804, 230 684" style="fill: none; stroke: var(--terracotta); stroke-width: 5; stroke-linecap: round; marker-end: url(#arrow-terracotta);"></path>
+            <text x="494" y="808" class="node-title" style="font-size: 28px; fill: var(--terracotta);">Feedback Loop</text>
+            <text x="494" y="841" class="tiny-note">restarts from real tasks, carrying only validated workflow memory forward</text>
+
+            <rect x="92" y="760" width="330" height="52" rx="26" style="fill: color-mix(in oklab, var(--gold), var(--paper) 74%); stroke: var(--gold); stroke-width: 2;"></rect>
+            <text x="120" y="793" class="tiny-note" style="fill: var(--charcoal);">Evidence is created by work, not by claims.</text>
+          </svg>
+        </figure>
+      </section>
+
+      <section class="board-shell" aria-label="Technical architecture board shell" data-od-id="technical-board-shell">
+        <figure id="technical-board" class="board" data-od-id="technical-board">
+          <svg viewBox="0 0 1600 900" role="img" aria-labelledby="tech-title tech-subtitle">
+            <title id="tech-title">MycEvo Technical Architecture</title>
+            <desc id="tech-subtitle">A local CLI and MCP external brain with evidence-gated evolution.</desc>
+            <defs>
+              <marker id="arrow-tech" markerWidth="18" markerHeight="18" refX="15" refY="9" orient="auto" markerUnits="strokeWidth">
+                <path d="M2,2 L16,9 L2,16 Z" style="fill: var(--charcoal);"></path>
+              </marker>
+              <marker id="arrow-dashed" markerWidth="18" markerHeight="18" refX="15" refY="9" orient="auto" markerUnits="strokeWidth">
+                <path d="M2,2 L16,9 L2,16 Z" style="fill: var(--sage);"></path>
+              </marker>
+            </defs>
+
+            <rect x="0" y="0" width="1600" height="900" style="fill: var(--bg);"></rect>
+            <rect x="42" y="42" width="1516" height="816" rx="26" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+
+            <text x="86" y="118" class="label-caps" style="fill: var(--sage);">Technical-architecture board</text>
+            <text x="86" y="185" class="svg-title">MycEvo Technical Architecture</text>
+            <text x="89" y="232" class="svg-subtitle">A local CLI and MCP external brain with evidence-gated evolution</text>
+
+            <rect x="84" y="286" width="654" height="272" rx="26" style="fill: var(--paper); stroke: var(--border); stroke-width: 3;"></rect>
+            <text x="118" y="334" class="label-caps" style="fill: var(--forest);">Public MycEvo Engine</text>
+            <text x="118" y="374" class="tiny-note">open engine, adapters, contracts, and shared governance logic</text>
+
+            <g aria-label="Agent surfaces">
+              <rect x="118" y="400" width="176" height="114" rx="18" style="fill: var(--bg); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="145" y="435" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Codex</text>
+              <text x="145" y="470" class="node-copy" style="fill: var(--muted); font-size: 20px;">Claude Code</text>
+              <text x="145" y="504" class="node-copy" style="fill: var(--muted); font-size: 20px;">Cursor</text>
+            </g>
+
+            <path d="M308 456 H372" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-tech);"></path>
+
+            <g aria-label="CLI stdio MCP">
+              <rect x="386" y="404" width="156" height="102" rx="18" style="fill: var(--paper); stroke: var(--sage); stroke-width: 3;"></rect>
+              <text x="418" y="445" class="node-copy" style="fill: var(--charcoal); font-size: 22px;">CLI /</text>
+              <text x="418" y="479" class="node-copy" style="fill: var(--charcoal); font-size: 22px;">stdio MCP</text>
+            </g>
+
+            <path d="M556 456 H612" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-tech);"></path>
+
+            <g aria-label="Shared MycEvo Core">
+              <rect x="626" y="384" width="238" height="142" rx="22" style="fill: var(--forest);"></rect>
+              <text x="663" y="438" class="node-title" style="fill: var(--paper); font-size: 28px;">Shared</text>
+              <text x="663" y="474" class="node-title" style="fill: var(--paper); font-size: 28px;">MycEvo Core</text>
+              <text x="663" y="510" class="tiny-note" style="fill: var(--paper);">local contracts only</text>
+            </g>
+
+            <path d="M882 456 H954" style="fill: none; stroke: var(--charcoal); stroke-width: 4; stroke-linecap: round; marker-end: url(#arrow-tech);"></path>
+
+            <line x1="906" y1="280" x2="906" y2="748" style="stroke: var(--terracotta); stroke-width: 4;"></line>
+            <rect x="746" y="286" width="340" height="48" rx="24" style="fill: var(--paper); stroke: var(--terracotta); stroke-width: 2;"></rect>
+            <text x="782" y="317" class="label-caps" style="fill: var(--terracotta);">No raw upload boundary</text>
+
+            <rect x="966" y="286" width="506" height="272" rx="26" style="fill: color-mix(in oklab, var(--sage), var(--paper) 88%); stroke: var(--sage); stroke-width: 3;"></rect>
+            <text x="1000" y="334" class="label-caps" style="fill: var(--forest);">Private Research Workspace</text>
+            <text x="1000" y="374" class="tiny-note">project-local evidence and decisions remain private by default</text>
+
+            <g aria-label="Private workspace modules">
+              <rect x="1000" y="410" width="108" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1016" y="445" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Registry</text>
+              <rect x="1120" y="410" width="118" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1133" y="445" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Retrieval</text>
+              <rect x="1250" y="410" width="136" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1260" y="445" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Provenance</text>
+              <rect x="1000" y="482" width="124" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1010" y="517" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Validators</text>
+              <rect x="1136" y="482" width="92" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1149" y="517" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Claims</text>
+              <rect x="1240" y="482" width="108" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1252" y="517" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Evidence</text>
+              <rect x="1360" y="482" width="104" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1370" y="517" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Artifacts</text>
+              <rect x="1360" y="410" width="104" height="54" rx="14" style="fill: var(--paper); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="1368" y="445" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Decisions</text>
+            </g>
+
+            <rect x="84" y="606" width="1000" height="150" rx="26" style="fill: var(--paper); stroke: var(--border); stroke-width: 3;"></rect>
+            <text x="118" y="650" class="label-caps" style="fill: var(--terracotta);">Evolution gate</text>
+
+            <g aria-label="Evolution gate sequence">
+              <rect x="118" y="682" width="132" height="46" rx="14" style="fill: var(--bg); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="139" y="712" class="node-copy" style="fill: var(--charcoal); font-size: 21px;">Candidate</text>
+              <path d="M260 705 H318" style="fill: none; stroke: var(--charcoal); stroke-width: 3; marker-end: url(#arrow-tech);"></path>
+              <rect x="330" y="682" width="194" height="46" rx="14" style="fill: var(--bg); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="346" y="712" class="node-copy" style="fill: var(--charcoal); font-size: 20px;">Held-out Validation</text>
+              <path d="M534 705 H592" style="fill: none; stroke: var(--charcoal); stroke-width: 3; marker-end: url(#arrow-tech);"></path>
+              <rect x="604" y="670" width="158" height="70" rx="18" style="fill: var(--terracotta);"></rect>
+              <text x="624" y="713" class="node-copy" style="fill: var(--paper); font-size: 21px; font-weight: 760;">Evidence Gate</text>
+              <path d="M774 705 H830" style="fill: none; stroke: var(--charcoal); stroke-width: 3; marker-end: url(#arrow-tech);"></path>
+              <rect x="842" y="682" width="176" height="46" rx="14" style="fill: var(--bg); stroke: var(--border); stroke-width: 2;"></rect>
+              <text x="858" y="712" class="node-copy" style="fill: var(--charcoal); font-size: 20px;">Human Promotion</text>
+              <path d="M1028 705 H1114" style="fill: none; stroke: var(--charcoal); stroke-width: 3; marker-end: url(#arrow-tech);"></path>
+              <rect x="1126" y="664" width="252" height="82" rx="20" style="fill: var(--forest);"></rect>
+              <text x="1160" y="700" class="node-copy" style="fill: var(--paper); font-size: 20px; font-weight: 760;">Reusable Workflow</text>
+              <text x="1160" y="729" class="node-copy" style="fill: var(--paper); font-size: 20px; font-weight: 760;">Memory</text>
+            </g>
+
+            <text x="1118" y="620" class="tiny-note" style="fill: var(--muted);">Reusable status is a human promotion after evidence.</text>
+
+            <path d="M1284 604 C1320 650, 1350 678, 1396 694" style="fill: none; stroke: var(--forest); stroke-width: 3; stroke-dasharray: 10 10; marker-end: url(#arrow-dashed);"></path>
+
+            <g aria-label="Sanitized public improvement path">
+              <path d="M1392 650 C1470 650, 1506 736, 1390 790 C1150 870, 486 852, 206 776 C134 756, 122 724, 148 700" style="fill: none; stroke: var(--sage); stroke-width: 4; stroke-linecap: round; stroke-dasharray: 14 14; marker-end: url(#arrow-dashed);"></path>
+              <rect x="1132" y="778" width="252" height="46" rx="23" style="fill: var(--paper); stroke: var(--sage); stroke-width: 2;"></rect>
+              <text x="1154" y="808" class="node-copy" style="fill: var(--forest); font-size: 20px;">Private real-world use</text>
+              <rect x="826" y="790" width="220" height="46" rx="23" style="fill: var(--paper); stroke: var(--sage); stroke-width: 2;"></rect>
+              <text x="847" y="820" class="node-copy" style="fill: var(--forest); font-size: 20px;">Sanitized candidate</text>
+              <rect x="510" y="790" width="244" height="46" rx="23" style="fill: var(--paper); stroke: var(--sage); stroke-width: 2;"></rect>
+              <text x="530" y="820" class="node-copy" style="fill: var(--forest); font-size: 20px;">Validation and review</text>
+              <rect x="178" y="774" width="262" height="62" rx="24" style="fill: var(--paper); stroke: var(--sage); stroke-width: 2;"></rect>
+              <text x="204" y="799" class="node-copy" style="fill: var(--forest); font-size: 20px;">Public MycEvo</text>
+              <text x="204" y="824" class="node-copy" style="fill: var(--forest); font-size: 20px;">improvement</text>
+              <text x="692" y="865" class="label-caps" style="fill: var(--sage);">Dashed path is sanitized only; raw private evidence stays local.</text>
+            </g>
+          </svg>
+        </figure>
+      </section>
+    </div>
+
+    <section class="notes" aria-label="Design assessment notes" data-od-id="design-notes">
+      <article class="note-card" data-od-id="design-system-notes">
+        <h2>Design-System Notes</h2>
+        <p>Warm editorial pacing is expressed through paper fields, broad margins, restrained outlines, and one terracotta checkpoint per board. The MycEvo brand palette overrides the generic Warm Editorial token values while preserving its field-guide mood.</p>
+      </article>
+      <article class="note-card" data-od-id="strengths">
+        <h2>Strengths</h2>
+        <ul>
+          <li>Readable at README scale because labels use large SVG text and short line breaks.</li>
+          <li>Validation is visually dominant without implying automation.</li>
+          <li>Public/private architecture and sanitized contribution path are explicit.</li>
+        </ul>
+      </article>
+      <article class="note-card" data-od-id="limitations">
+        <h2>Limitations</h2>
+        <ul>
+          <li>This is an exploratory board, not final production SVG cleanup.</li>
+          <li>Inline SVG keeps editability high, but downstream README export still needs screenshot QA.</li>
+          <li>The composition favors governance clarity over compact mobile viewing.</li>
+        </ul>
+      </article>
+      <article class="note-card" data-od-id="semantic-fit">
+        <h2>Semantic Fit</h2>
+        <p>Strong fit for MycEvo: the visual language treats workflow memory as a curated, evidence-gated field guide rather than a magic self-improving loop. Candidate, reusable, validation, and sanitized improvement paths remain semantically separate.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
