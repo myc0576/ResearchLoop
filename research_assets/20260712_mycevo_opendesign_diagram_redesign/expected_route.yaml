@@ -1,0 +1,13 @@
+schema: researchloop.visual_to_editable_route_result.v1
+request_id: 20260712_mycevo_opendesign_diagram_redesign
+selected_route: flowchart_to_mermaid_svg
+expected_outputs:
+  - html
+  - svg
+  - qa_report
+expected_closeout:
+  - visual_reconstruction_prompt.md
+  - visual_reconstruction_manifest.yaml
+  - visual_reconstruction_qa.md
+  - figure_card.md
+  - reproduction_entry.md

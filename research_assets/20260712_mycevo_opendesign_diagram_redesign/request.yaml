@@ -1,0 +1,24 @@
+schema: researchloop.visual_to_editable_request.v1
+request_id: 20260712_mycevo_opendesign_diagram_redesign
+source:
+  reference: repository:assets/readme/mycevo-architecture-svgs
+  path: assets/readme
+  input_type: workflow_diagram
+  sensitivity: public_repository_asset
+  commit_policy: public_design_assets_only
+  commit_allowed: true
+visual_signals:
+  - arrow
+  - node
+  - connector
+  - swimlane
+  - process_flow
+target_outputs:
+  - html
+  - svg
+intended_use:
+  - github_readme
+  - brand_system
+  - architecture_documentation
+route_hint: flowchart_to_mermaid_svg
+notes: OpenDesign explores directions; Codex rebuilds final native SVG without Mermaid or runtime dependencies.

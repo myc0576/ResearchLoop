@@ -69,15 +69,19 @@ MycEvo uses each agent's official `mcp add/get/remove` command. The stdio launch
 
 ## Product architecture
 
-![MycEvo product architecture](assets/readme/mycevo-product-light.svg)
-
-[Dark version](assets/readme/mycevo-product-dark.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/readme/mycevo-product-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/readme/mycevo-product-light.svg">
+  <img alt="Bilingual diagram showing how MycEvo evolves a research workflow through evidence, candidate memory, validation, reuse, and feedback" src="assets/readme/mycevo-product-light.svg">
+</picture>
 
 ## Technical architecture
 
-![MycEvo technical architecture](assets/readme/mycevo-technical-light.svg)
-
-[Dark version](assets/readme/mycevo-technical-dark.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/readme/mycevo-technical-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/readme/mycevo-technical-light.svg">
+  <img alt="Bilingual diagram of the MycEvo public engine, private research workspace, evidence gate, and sanitized public improvement architecture" src="assets/readme/mycevo-technical-light.svg">
+</picture>
 
 The public engine is a versioned dependency of a private research workspace. Real-world private use can produce a sanitized candidate, but public improvement still requires validation and review.
 

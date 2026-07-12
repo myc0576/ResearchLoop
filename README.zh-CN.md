@@ -38,15 +38,21 @@ task -> intake -> candidate writeback -> validation -> closeout -> recall
 
 ## 产品架构
 
-![MycEvo 产品架构](assets/readme/mycevo-product-light.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/readme/mycevo-product-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/readme/mycevo-product-light.svg">
+  <img alt="MycEvo 通过证据、候选记忆、验证门禁、复用和反馈持续改进科研工作流的中英双语图" src="assets/readme/mycevo-product-light.svg">
+</picture>
 
-[深色版本](assets/readme/mycevo-product-dark.svg)
+图中候选经验不会自动晋升；只有经过证据与人工门禁的经验才能成为可复用工作流。
 
 ## 技术架构
 
-![MycEvo 技术架构](assets/readme/mycevo-technical-light.svg)
-
-[深色版本](assets/readme/mycevo-technical-dark.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/readme/mycevo-technical-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/readme/mycevo-technical-light.svg">
+  <img alt="MycEvo 公共引擎、私有科研工作区、证据门禁与脱敏公共改进路径的中英双语图" src="assets/readme/mycevo-technical-light.svg">
+</picture>
 
 MycEvo 是公共、版本化引擎；私有科研 workspace 保存真实状态、知识和实验扩展。私有实践只能先形成脱敏 candidate，经验证后才能反哺公共引擎。
 

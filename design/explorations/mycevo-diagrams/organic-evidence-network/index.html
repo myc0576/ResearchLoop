@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MycEvo Organic Evidence Network</title>
+  <style>
+    :root {
+      --bg: #F7F3EA;
+      --paper: #FFFDF8;
+      --terracotta: #D97757;
+      --charcoal: #2F2A26;
+      --sage: #68775A;
+      --forest: #405A47;
+      --border: #D9CEC2;
+      --muted: #746B63;
+      --gold: #C99A4A;
+      --dark-bg: #211F1C;
+      --dark-card: #2B2824;
+      --dark-terracotta: #E58A68;
+      --dark-sage: #879879;
+      --dark-primary: #F6F0E7;
+      --dark-muted: #BDB3A8;
+      --dark-border: #4A433C;
+      --font-body: Inter, Arial, system-ui, "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--bg);
+      color: var(--charcoal);
+      font-family: var(--font-body);
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+    }
+
+    main {
+      width: min(100%, 1680px);
+      margin: 0 auto;
+      padding: 36px 24px 64px;
+    }
+
+    .intro {
+      max-width: 980px;
+      margin: 0 0 32px;
+    }
+
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--forest);
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 900px;
+      font-size: clamp(36px, 5vw, 72px);
+      line-height: 1.03;
+      letter-spacing: -0.02em;
+    }
+
+    .intro p {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .board-wrap {
+      margin: 34px 0 42px;
+    }
+
+    .board-label {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .board-canvas {
+      display: block;
+      width: 100%;
+      max-width: 1600px;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      background: var(--bg);
+      border: 1px solid var(--border);
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 1600px;
+      margin-top: 48px;
+    }
+
+    .note-card {
+      min-height: 220px;
+      padding: 24px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+    .note-card h2 {
+      margin: 0 0 14px;
+      font-size: 21px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .note-card p,
+    .note-card li {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .note-card ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .token-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .swatch {
+      min-height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .swatch.bg { background: var(--bg); }
+    .swatch.paper { background: var(--paper); }
+    .swatch.terracotta { background: var(--terracotta); }
+    .swatch.charcoal { background: var(--charcoal); }
+    .swatch.sage { background: var(--sage); }
+    .swatch.gold { background: var(--gold); }
+
+    svg {
+      font-family: var(--font-body);
+      text-rendering: geometricPrecision;
+    }
+
+    .svg-bg { fill: var(--bg); }
+    .svg-paper { fill: var(--paper); }
+    .svg-charcoal { fill: var(--charcoal); }
+    .svg-muted { fill: var(--muted); }
+    .svg-sage { fill: var(--sage); }
+    .svg-forest { fill: var(--forest); }
+    .svg-terracotta { fill: var(--terracotta); }
+    .svg-gold { fill: var(--gold); }
+    .stroke-border { stroke: var(--border); }
+    .stroke-sage { stroke: var(--sage); }
+    .stroke-forest { stroke: var(--forest); }
+    .stroke-terracotta { stroke: var(--terracotta); }
+    .stroke-gold { stroke: var(--gold); }
+    .stroke-charcoal { stroke: var(--charcoal); }
+    .stroke-muted { stroke: var(--muted); }
+
+    .board-title {
+      fill: var(--charcoal);
+      font-size: 58px;
+      font-weight: 800;
+      letter-spacing: -0.018em;
+    }
+
+    .board-subtitle {
+      fill: var(--muted);
+      font-size: 30px;
+      font-weight: 500;
+    }
+
+    .board-kicker {
+      fill: var(--forest);
+      font-size: 18px;
+      font-weight: 820;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .node-title {
+      fill: var(--charcoal);
+      font-size: 31px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .node-title-small {
+      fill: var(--charcoal);
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -0.005em;
+    }
+
+    .node-sub {
+      fill: var(--muted);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .node-mini {
+      fill: var(--muted);
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .label-caps {
+      fill: var(--forest);
+      font-size: 17px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .fine-label {
+      fill: var(--muted);
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .callout-text {
+      fill: var(--terracotta);
+      font-size: 26px;
+      font-weight: 860;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .caption {
+      fill: var(--muted);
+      font-size: 21px;
+      font-weight: 600;
+    }
+
+    .boundary-title {
+      fill: var(--charcoal);
+      font-size: 34px;
+      font-weight: 850;
+      letter-spacing: -0.01em;
+    }
+
+    .flow-label {
+      fill: var(--charcoal);
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        padding: 24px 14px 44px;
+      }
+
+      .notes {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="intro" data-od-id="intro">
+      <p class="kicker">Organic Evidence Network</p>
+      <h1>MycEvo README Direction Boards</h1>
+      <p>Two editable, self-contained canvases for explaining how evidence accumulates while governance decides what becomes reusable workflow memory.</p>
+    </header>
+
+    <section class="board-wrap" aria-labelledby="product-board-label" data-od-id="product-board-section">
+      <p id="product-board-label" class="board-label">Product mechanism board · 1600 × 900</p>
+      <svg id="product-board" class="board-canvas" viewBox="0 0 1600 900" role="img" aria-labelledby="product-title product-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="product-title">How MycEvo Evolves a Research Workflow</title>
+        <desc id="product-desc">A left-to-right evidence governance flow from research tasks through validation to reusable workflow memory and a feedback loop.</desc>
+        <defs>
+          <marker id="arrow-sage" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="var(--sage)"/>
+          </marker>
+          <marker id="arrow-forest" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="var(--forest)"/>
+          </marker>
+          <marker id="arrow-gold" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="var(--gold)"/>
+          </marker>
+        </defs>
+
+        <rect class="svg-bg" width="1600" height="900"/>
+        <rect x="42" y="38" width="1516" height="824" rx="34" class="svg-paper stroke-border" stroke-width="2"/>
+        <text x="92" y="86" class="board-kicker">ORGANIC EVIDENCE NETWORK</text>
+        <text x="92" y="147" class="board-title">How MycEvo Evolves a Research Workflow</text>
+        <text x="94" y="192" class="board-subtitle">Every task creates evidence. Only validated lessons become reusable.</text>
+
+        <path d="M308 424 C332 394 344 390 366 390" fill="none" class="stroke-sage" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow-sage)"/>
+        <path d="M548 390 C578 390 590 405 616 424" fill="none" class="stroke-sage" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow-sage)"/>
+        <path d="M822 424 C846 398 860 386 885 382" fill="none" class="stroke-sage" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow-sage)"/>
+        <path d="M1085 382 C1116 390 1128 405 1148 424" fill="none" class="stroke-gold" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow-gold)"/>
+        <path d="M1360 424 C1386 404 1396 398 1419 398" fill="none" class="stroke-forest" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow-forest)"/>
+
+        <g data-od-id="product-real-research-tasks">
+          <rect x="108" y="342" width="202" height="164" rx="22" class="svg-paper stroke-border" stroke-width="3"/>
+          <circle cx="144" cy="382" r="13" class="svg-sage"/>
+          <circle cx="181" cy="382" r="13" class="svg-gold"/>
+          <circle cx="218" cy="382" r="13" class="svg-terracotta"/>
+          <text x="140" y="438" class="node-title-small">Real Research</text>
+          <text x="140" y="472" class="node-title-small">Tasks</text>
+          <text x="140" y="501" class="node-sub">paper work, scripts, review</text>
+        </g>
+
+        <g data-od-id="product-evidence-capture">
+          <rect x="366" y="318" width="190" height="144" rx="22" class="svg-paper stroke-sage" stroke-width="3"/>
+          <text x="394" y="373" class="node-title-small">Evidence</text>
+          <text x="394" y="407" class="node-title-small">Capture</text>
+          <text x="394" y="438" class="node-sub">commands, traces, outputs</text>
+          <circle cx="390" cy="500" r="11" class="svg-sage"/>
+          <circle cx="432" cy="520" r="11" class="svg-sage"/>
+          <circle cx="482" cy="506" r="11" class="svg-sage"/>
+          <circle cx="528" cy="528" r="11" class="svg-sage"/>
+          <path d="M401 501 L421 516 M443 519 L471 510 M494 510 L517 523" fill="none" class="stroke-sage" stroke-width="3" stroke-linecap="round"/>
+        </g>
+
+        <g data-od-id="product-candidate-memory">
+          <rect x="616" y="342" width="214" height="164" rx="22" class="svg-paper stroke-muted" stroke-width="3" stroke-dasharray="12 10"/>
+          <text x="650" y="402" class="node-title-small">Candidate</text>
+          <text x="650" y="437" class="node-title-small">Workflow Memory</text>
+          <text x="650" y="470" class="node-sub">useful, but not promoted</text>
+          <rect x="650" y="494" width="138" height="34" rx="17" fill="none" class="stroke-muted" stroke-width="2" stroke-dasharray="7 7"/>
+          <text x="671" y="517" class="node-mini">candidate</text>
+        </g>
+
+        <g data-od-id="product-validation-gate">
+          <rect x="880" y="264" width="214" height="250" rx="30" class="svg-paper stroke-gold" stroke-width="7"/>
+          <rect x="904" y="288" width="166" height="48" rx="24" class="svg-terracotta"/>
+          <text x="932" y="321" fill="var(--paper)" font-size="22" font-weight="850" letter-spacing="0.06em">GATE</text>
+          <text x="920" y="379" class="node-title">Validation</text>
+          <text x="920" y="420" class="node-title">Gate</text>
+          <line x1="920" y1="446" x2="1056" y2="446" class="stroke-border" stroke-width="3"/>
+          <text x="920" y="479" class="node-sub">evidence check</text>
+          <text x="920" y="509" class="node-sub">held-out replay</text>
+          <text x="920" y="539" class="node-sub">human decision</text>
+        </g>
+
+        <g data-od-id="product-no-silent-promotion">
+          <rect x="778" y="590" width="406" height="72" rx="22" fill="none" class="stroke-terracotta" stroke-width="4"/>
+          <text x="816" y="635" class="callout-text">NO SILENT PROMOTION</text>
+          <text x="820" y="680" class="caption">Candidate memory stays candidate until the gate is passed.</text>
+        </g>
+
+        <g data-od-id="product-reusable-workflow">
+          <rect x="1148" y="342" width="214" height="164" rx="22" class="svg-paper stroke-forest" stroke-width="5"/>
+          <rect x="1182" y="376" width="146" height="24" rx="12" class="svg-forest"/>
+          <rect x="1182" y="418" width="126" height="16" rx="8" class="svg-sage"/>
+          <rect x="1182" y="448" width="156" height="16" rx="8" class="svg-sage"/>
+          <text x="1182" y="499" class="node-title-small">Reusable</text>
+          <text x="1182" y="533" class="node-title-small">Workflow</text>
+          <text x="1182" y="563" class="node-sub">stable, versioned, cited</text>
+        </g>
+
+        <g data-od-id="product-next-paper">
+          <rect x="1418" y="330" width="100" height="176" rx="16" class="svg-paper stroke-border" stroke-width="3"/>
+          <line x1="1442" y1="374" x2="1496" y2="374" class="stroke-terracotta" stroke-width="5" stroke-linecap="round"/>
+          <line x1="1442" y1="410" x2="1496" y2="410" class="stroke-sage" stroke-width="4" stroke-linecap="round"/>
+          <line x1="1442" y1="440" x2="1482" y2="440" class="stroke-sage" stroke-width="4" stroke-linecap="round"/>
+          <text x="1394" y="550" class="node-title-small">Next Paper</text>
+        </g>
+
+        <g data-od-id="product-feedback-loop">
+          <path d="M1468 584 C1340 742 1060 786 810 776 C520 766 256 712 170 572" fill="none" class="stroke-sage" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow-sage)"/>
+          <rect x="644" y="722" width="260" height="62" rx="31" class="svg-paper stroke-sage" stroke-width="4"/>
+          <text x="695" y="763" class="flow-label">Feedback Loop</text>
+        </g>
+
+        <g data-od-id="product-governance-legend">
+          <rect x="104" y="712" width="402" height="82" rx="22" fill="none" class="stroke-border" stroke-width="2"/>
+          <circle cx="144" cy="750" r="10" class="svg-sage"/>
+          <text x="166" y="757" class="fine-label">Sage connectors: accumulating evidence</text>
+          <circle cx="144" cy="780" r="10" class="svg-gold"/>
+          <text x="166" y="787" class="fine-label">Gold/terracotta: validation checkpoints</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="board-wrap" aria-labelledby="technical-board-label" data-od-id="technical-board-section">
+      <p id="technical-board-label" class="board-label">Technical architecture board · 1600 × 900</p>
+      <svg id="technical-board" class="board-canvas" viewBox="0 0 1600 900" role="img" aria-labelledby="technical-title technical-desc" xmlns="http://www.w3.org/2000/svg">
+        <title id="technical-title">MycEvo Technical Architecture</title>
+        <desc id="technical-desc">A separated public engine and private research workspace architecture with evidence-gated evolution and sanitized public improvement.</desc>
+        <defs>
+          <marker id="tech-arrow-sage" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="var(--sage)"/>
+          </marker>
+          <marker id="tech-arrow-forest" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="var(--forest)"/>
+          </marker>
+          <marker id="tech-arrow-gold" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="var(--gold)"/>
+          </marker>
+          <marker id="tech-arrow-terracotta" viewBox="0 0 12 12" refX="10.5" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+            <path d="M1 1 L11 6 L1 11 Z" fill="var(--terracotta)"/>
+          </marker>
+        </defs>
+
+        <rect class="svg-bg" width="1600" height="900"/>
+        <rect x="42" y="38" width="1516" height="824" rx="34" class="svg-paper stroke-border" stroke-width="2"/>
+        <text x="92" y="86" class="board-kicker">LOCAL CLI + MCP EXTERNAL BRAIN</text>
+        <text x="92" y="147" class="board-title">MycEvo Technical Architecture</text>
+        <text x="94" y="192" class="board-subtitle">A local CLI and MCP external brain with evidence-gated evolution</text>
+
+        <g data-od-id="technical-public-engine">
+          <rect x="82" y="232" width="504" height="388" rx="30" fill="none" class="stroke-forest" stroke-width="4"/>
+          <text x="120" y="282" class="boundary-title">Public MycEvo Engine</text>
+          <rect x="126" y="316" width="374" height="68" rx="18" class="svg-paper stroke-border" stroke-width="3"/>
+          <text x="158" y="358" class="node-title-small">Codex / Claude Code / Cursor</text>
+          <path d="M313 390 L313 423" fill="none" class="stroke-sage" stroke-width="6" stroke-linecap="round" marker-end="url(#tech-arrow-sage)"/>
+          <rect x="126" y="426" width="374" height="68" rx="18" class="svg-paper stroke-sage" stroke-width="3"/>
+          <text x="206" y="468" class="node-title-small">CLI / stdio MCP</text>
+          <path d="M313 500 L313 533" fill="none" class="stroke-sage" stroke-width="6" stroke-linecap="round" marker-end="url(#tech-arrow-sage)"/>
+          <rect x="126" y="536" width="374" height="68" rx="18" class="svg-paper stroke-forest" stroke-width="4"/>
+          <text x="178" y="578" class="node-title-small">Shared MycEvo Core</text>
+        </g>
+
+        <g data-od-id="technical-private-workspace">
+          <rect x="686" y="232" width="834" height="388" rx="30" fill="none" class="stroke-charcoal" stroke-width="4"/>
+          <text x="726" y="282" class="boundary-title">Private Research Workspace</text>
+
+          <path d="M1100 414 L894 337 M1100 414 L1040 324 M1100 414 L1222 337 M1100 414 L1348 414 M1100 414 L1248 508 M1100 414 L1040 528 M1100 414 L894 498" fill="none" class="stroke-sage" stroke-width="4" stroke-linecap="round"/>
+
+          <g data-od-id="technical-node-evidence">
+            <circle cx="1100" cy="414" r="62" class="svg-paper stroke-gold" stroke-width="5"/>
+            <text x="1044" y="424" class="flow-label">Evidence</text>
+          </g>
+          <g data-od-id="technical-node-registry">
+            <rect x="776" y="300" width="170" height="74" rx="18" class="svg-paper stroke-border" stroke-width="3"/>
+            <text x="816" y="346" class="flow-label">Registry</text>
+          </g>
+          <g data-od-id="technical-node-retrieval">
+            <rect x="966" y="286" width="176" height="74" rx="18" class="svg-paper stroke-border" stroke-width="3"/>
+            <text x="1006" y="332" class="flow-label">Retrieval</text>
+          </g>
+          <g data-od-id="technical-node-provenance">
+            <rect x="1164" y="300" width="206" height="74" rx="18" class="svg-paper stroke-border" stroke-width="3"/>
+            <text x="1196" y="346" class="flow-label">Provenance</text>
+          </g>
+          <g data-od-id="technical-node-validators">
+            <rect x="1278" y="376" width="180" height="74" rx="18" class="svg-paper stroke-terracotta" stroke-width="3"/>
+            <text x="1312" y="422" class="flow-label">Validators</text>
+          </g>
+          <g data-od-id="technical-node-claims">
+            <rect x="1174" y="486" width="154" height="74" rx="18" class="svg-paper stroke-border" stroke-width="3"/>
+            <text x="1214" y="532" class="flow-label">Claims</text>
+          </g>
+          <g data-od-id="technical-node-artifacts">
+            <rect x="958" y="506" width="178" height="74" rx="18" class="svg-paper stroke-border" stroke-width="3"/>
+            <text x="996" y="552" class="flow-label">Artifacts</text>
+          </g>
+          <g data-od-id="technical-node-decisions">
+            <rect x="770" y="462" width="188" height="74" rx="18" class="svg-paper stroke-gold" stroke-width="3"/>
+            <text x="804" y="508" class="flow-label">Decisions</text>
+          </g>
+        </g>
+
+        <path d="M502 570 C574 570 600 490 676 452" fill="none" class="stroke-forest" stroke-width="7" stroke-linecap="round" marker-end="url(#tech-arrow-forest)"/>
+        <text x="520" y="524" class="fine-label">one-way local dependency</text>
+
+        <g data-od-id="technical-public-improvement-path">
+          <rect x="1138" y="650" width="270" height="58" rx="20" class="svg-paper stroke-border" stroke-width="3"/>
+          <text x="1170" y="687" class="flow-label">Private real-world use</text>
+          <rect x="824" y="650" width="250" height="58" rx="20" class="svg-paper stroke-terracotta" stroke-width="3" stroke-dasharray="10 9"/>
+          <text x="864" y="687" class="flow-label">Sanitized candidate</text>
+          <rect x="500" y="650" width="262" height="58" rx="20" class="svg-paper stroke-terracotta" stroke-width="3" stroke-dasharray="10 9"/>
+          <text x="536" y="687" class="flow-label">Validation and review</text>
+          <rect x="126" y="650" width="296" height="58" rx="20" class="svg-paper stroke-forest" stroke-width="3"/>
+          <text x="160" y="687" class="flow-label">Public MycEvo improvement</text>
+          <path d="M1138 679 L1084 679 M824 679 L772 679 M500 679 L432 679" fill="none" class="stroke-terracotta" stroke-width="5" stroke-linecap="round" stroke-dasharray="14 12" marker-end="url(#tech-arrow-terracotta)"/>
+          <text x="688" y="630" class="callout-text">SANITIZED PATH ONLY</text>
+          <text x="694" y="734" class="caption">No raw private data upload. No automatic public promotion.</text>
+        </g>
+
+        <g data-od-id="technical-evolution-gate">
+          <rect x="82" y="766" width="1438" height="70" rx="24" fill="none" class="stroke-border" stroke-width="3"/>
+          <text x="118" y="810" class="label-caps">EVOLUTION GATE</text>
+          <rect x="298" y="780" width="144" height="42" rx="21" class="svg-paper stroke-muted" stroke-width="3" stroke-dasharray="8 7"/>
+          <text x="325" y="807" class="fine-label">Candidate</text>
+          <path d="M452 801 L500 801" fill="none" class="stroke-sage" stroke-width="5" stroke-linecap="round" marker-end="url(#tech-arrow-sage)"/>
+          <rect x="512" y="780" width="214" height="42" rx="21" class="svg-paper stroke-sage" stroke-width="3"/>
+          <text x="537" y="807" class="fine-label">Held-out Validation</text>
+          <path d="M736 801 L792 801" fill="none" class="stroke-sage" stroke-width="5" stroke-linecap="round" marker-end="url(#tech-arrow-sage)"/>
+          <rect x="804" y="780" width="170" height="42" rx="21" class="svg-paper stroke-gold" stroke-width="4"/>
+          <text x="836" y="807" class="fine-label">Evidence Gate</text>
+          <path d="M984 801 L1038 801" fill="none" class="stroke-gold" stroke-width="5" stroke-linecap="round" marker-end="url(#tech-arrow-gold)"/>
+          <rect x="1050" y="780" width="196" height="42" rx="21" class="svg-paper stroke-terracotta" stroke-width="4"/>
+          <text x="1076" y="807" class="fine-label">Human Promotion</text>
+          <path d="M1256 801 L1304 801" fill="none" class="stroke-gold" stroke-width="5" stroke-linecap="round" marker-end="url(#tech-arrow-gold)"/>
+          <rect x="1316" y="776" width="178" height="50" rx="21" class="svg-paper stroke-forest" stroke-width="4"/>
+          <text x="1340" y="796" class="fine-label">Reusable Workflow</text>
+          <text x="1372" y="819" class="fine-label">Memory</text>
+        </g>
+      </svg>
+    </section>
+
+    <section class="notes" aria-label="Design-system notes and assessment" data-od-id="notes">
+      <article class="note-card" data-od-id="design-system-notes">
+        <h2>Design-System Notes</h2>
+        <p>Warm editorial restraint, but driven by the MycEvo contract rather than the generic starter palette. Inter/Arial/system-ui plus Chinese fallbacks keep README rendering portable.</p>
+        <div class="token-row" aria-label="Primary palette swatches">
+          <span class="swatch bg" title="background"></span>
+          <span class="swatch paper" title="paper"></span>
+          <span class="swatch terracotta" title="terracotta"></span>
+          <span class="swatch charcoal" title="deep charcoal"></span>
+          <span class="swatch sage" title="sage"></span>
+          <span class="swatch gold" title="soft gold"></span>
+        </div>
+      </article>
+
+      <article class="note-card" data-od-id="strengths">
+        <h2>Strengths</h2>
+        <ul>
+          <li>Mechanism-first flow maps directly to the README narrative.</li>
+          <li>Validation is visually dominant without decorative overload.</li>
+          <li>Candidate, reusable, and sanitized paths are distinguishable at small sizes.</li>
+        </ul>
+      </article>
+
+      <article class="note-card" data-od-id="limitations">
+        <h2>Limitations</h2>
+        <ul>
+          <li>Dense technical labels may still need manual screenshot tuning for narrow Markdown columns.</li>
+          <li>The organic motif is intentionally abstract, so it reads as network governance rather than biology.</li>
+          <li>This is exploration-grade HTML/SVG, not final production illustration tooling.</li>
+        </ul>
+      </article>
+
+      <article class="note-card" data-od-id="semantic-fit">
+        <h2>Semantic-Fit Assessment</h2>
+        <p>Strong fit for “evidence grows, governance decides”: sage connectors show accumulation, terracotta/gold gates show validation, and strict arrows prevent accidental claims of raw upload or automatic promotion.</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

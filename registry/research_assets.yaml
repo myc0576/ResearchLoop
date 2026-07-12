@@ -360,3 +360,26 @@ research_assets:
   last_reviewed_at: '2026-07-02T00:00:00+08:00'
   quality_level: silver
   superseded_by: ''
+- id: 20260712_mycevo_opendesign_diagram_redesign
+  project_id: mycevo
+  task_name: opendesign_readme_diagram_redesign
+  asset_dir: research_assets/20260712_mycevo_opendesign_diagram_redesign
+  intended_uses:
+  - GitHub
+  - architecture documentation
+  - Codex retrieval
+  - visual design governance
+  manifest: research_assets/20260712_mycevo_opendesign_diagram_redesign/00_asset_manifest.md
+  reproduction_entry: research_assets/20260712_mycevo_opendesign_diagram_redesign/reproduction_entry.md
+  status: pending validation
+  created_at: '2026-07-12'
+  last_verified_at: '2026-07-12'
+  verification_due_days: 90
+  encoding_status: ok
+  confidence: 0.93
+  confidence_reason: OpenDesign three-direction exploration plus native SVG structural, contrast, semantic, and multi-scale render checks
+  reference_count: 12
+  last_used_at: '2026-07-12T00:00:00+08:00'
+  last_reviewed_at: '2026-07-12T00:00:00+08:00'
+  quality_level: silver
+  superseded_by: ''
